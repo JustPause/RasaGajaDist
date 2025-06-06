@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/rasagaja/public_html/
+    - /bin/cp -R index.html 404.html 500.html favicon.svg robots.txt humans.txt sitemap.xml $DEPLOYPATH
+    - /bin/cp -R apie-save audio-books audio-irašai fonts tekstai _astro $DEPLOYPATH
