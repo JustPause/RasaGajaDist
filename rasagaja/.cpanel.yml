@@ -2,8 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/rasagaja/public_html/
-    - /bin/rm -rf $DEPLOYPATH/*
-    - /bin/cp -R rasagaja/index.html rasagaja/404.html rasagaja/500.html rasagaja/favicon.svg rasagaja/robots.txt rasagaja/humans.txt rasagaja/sitemap.xml $DEPLOYPATH
-    - /bin/cp -R rasagaja/apie-save rasagaja/audio-books rasagaja/audio-irašai rasagaja/fonts rasagaja/tekstai rasagaja/_astro $DEPLOYPATH
-    - /bin/cp -R rasagaja/.htaccess $DEPLOYPATH/.htaccess
+    - export MYPATH=rasagaja/
+    - /bin/cp -R $MYPATH/index.html $MYPATH/404.html $MYPATH/500.html $MYPATH/favicon.svg $MYPATH/robots.txt $MYPATH/LICENSE.txt $MYPATH/humans.txt $MYPATH/sitemap.xml $MYPATH/google7c41510533b69851.html $MYPATH/.htaccess $DEPLOYPATH
+    - /bin/cp -R $MYPATH/400 $MYPATH/403 $MYPATH/_astro $MYPATH/audio-irašai $MYPATH/fonts $MYPATH/401 $MYPATH/apie-save $MYPATH/audio-books $MYPATH/tekstai $DEPLOYPATH
     
