@@ -10,5 +10,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/rasagaja/public_html/
-    - if [ -d "$DEPLOYPATH" ]; then echo "Clearing $DEPLOYPATH"; rm -rf -- "$DEPLOYPATH"/*; else echo "Directory does not exist"; fi
     - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp style.css $DEPLOYPATH
