@@ -10,6 +10,7 @@ import { dirname } from "path";
 const app = express();
 
 const port = process.env.PORT || 3000;
+const allowedIps = ['127.0.0.1', '::1', '::ffff:127.0.0.1'];
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
 let Chapetes = [];
@@ -17,6 +18,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const pathForDownload = path.join(__dirname, "files");
 export const downloads = new DownloadedFiles();
+
+app.use((req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+
+  if (!allowedIps.includes(ip)) {
+    console.log("Blocked IP:", ip);
+    return res.status(403).send('Forbidden');
+  }
+
+  next();
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

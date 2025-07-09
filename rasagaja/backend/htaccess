@@ -9,11 +9,3 @@ PassengerStartupFile index.js
 <IfModule Litespeed>
 </IfModule>
 # DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
-
-<Directory "/var/home/rasagaja/backend">
-    <Limit GET POST>
-        Order Deny,Allow
-        Deny from all
-        Allow from 127.0.0.1
-    </Limit>
-</Directory>
