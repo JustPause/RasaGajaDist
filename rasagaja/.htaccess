@@ -48,6 +48,10 @@ Options -Indexes
 	Require all denied
 </FilesMatch>
 
+<DirectoryMatch "/backend">
+    Require all denied
+</DirectoryMatch>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
