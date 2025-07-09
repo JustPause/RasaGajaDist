@@ -19,17 +19,6 @@ const __dirname = dirname(__filename);
 const pathForDownload = path.join(__dirname, "files");
 export const downloads = new DownloadedFiles();
 
-app.use((req, res, next) => {
-  const ip = req.ip || req.connection.remoteAddress;
-
-  if (!allowedIps.includes(ip)) {
-    console.log("Blocked IP:", ip);
-    return res.status(403).send('Forbidden');
-  }
-
-  next();
-});
-
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
