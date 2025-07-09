@@ -55,13 +55,17 @@ Options -Indexes
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  
-  RewriteCond %{REQUEST_URI} !^/backend/
-  
-#   RewriteCond %{REQUEST_FILENAME} !-f
-#   RewriteCond %{REQUEST_FILENAME} !-d
-#   RewriteRule . /index.html [L]
+
+  # Let Node.js handle /backend/* routes
+  RewriteCond %{REQUEST_URI} ^/backend/ [NC]
+  RewriteRule ^ - [L]
+
+  # Let existing files/folders through (images, CSS, JS, etc.)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Redirect everything else to SPA index.html
+  RewriteRule . /index.html [L]
 </IfModule>
 
 # Rewrite Rules
