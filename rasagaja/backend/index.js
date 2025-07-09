@@ -2,21 +2,14 @@ import { findIdByName, getBooks, streamFile } from "./googleDrive.mjs";
 import { DownloadedFiles } from "./DownloadedFiles.mjs";
 import { initProcess } from "./process.mjs";
 
-import path from "path";
 import express from "express";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
 const app = express();
 
 const port = process.env.PORT || 3000;
-const allowedIps = ['127.0.0.1', '::1', '::ffff:127.0.0.1'];
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
 let Chapetes = [];
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const pathForDownload = path.join(__dirname, "files");
 export const downloads = new DownloadedFiles();
 
 app.listen(port, () => {
