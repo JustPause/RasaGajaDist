@@ -40,37 +40,37 @@ ErrorDocument 400 /errors/400/index.html
 	Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
 </IfModule>
 
-# Disable directory listing
-Options -Indexes
+# # Disable directory listing
+# Options -Indexes
 
-# Block access to hidden files
-<FilesMatch "^\.">
-	Require all denied
-</FilesMatch>
+# # Block access to hidden files
+# <FilesMatch "^\.">
+# 	Require all denied
+# </FilesMatch>
 
-# <If "%{REQUEST_URI} =~ m#^/backend#">
-#     Require all denied
-# </If>
+# # <If "%{REQUEST_URI} =~ m#^/backend#">
+# #     Require all denied
+# # </If>
 
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteBase /
 
-  # Let Node.js handle /backend/* routes
-  RewriteCond %{REQUEST_URI} ^/backend/ [NC]
-  RewriteRule ^ - [L]
+#   # Let Node.js handle /backend/* routes
+#   RewriteCond %{REQUEST_URI} ^/backend/ [NC]
+#   RewriteRule ^ - [L]
 
-  # Let existing files/folders through (images, CSS, JS, etc.)
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
+#   # Let existing files/folders through (images, CSS, JS, etc.)
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteCond %{REQUEST_FILENAME} !-d
 
-  # Redirect everything else to SPA index.html
-  RewriteRule . /index.html [L]
-</IfModule>
+#   # Redirect everything else to SPA index.html
+#   RewriteRule . /index.html [L]
+# </IfModule>
 
-# Rewrite Rules
-RewriteEngine On
-RewriteBase /
+# # Rewrite Rules
+# RewriteEngine On
+# RewriteBase /
 
-# Allow Google site verification
-RewriteRule ^google[0-9a-f]+\.html$ - [L]
+# # Allow Google site verification
+# RewriteRule ^google[0-9a-f]+\.html$ - [L]
