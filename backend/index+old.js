@@ -6,14 +6,12 @@ import express from "express";
 
 const app = express();
 
-const port = process.env.PORT || 3000;
-
 let Books = ["nemunai-teka-i-drakono-kalnus"];
 let Chapetes = [];
 export const downloads = new DownloadedFiles();
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(() => {
+  console.log(`Server listening`);
 });
 
 app.get("/", async (req, res) => {
