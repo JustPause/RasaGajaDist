@@ -1,0 +1,8 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/var/home/rasagaja/backendhidden"
+PassengerBaseURI "/backendhidden"
+PassengerNodejs "/var/home/rasagaja/nodevenv/backendhidden/18/bin/node"
+PassengerAppType node
+PassengerStartupFile index.js
+PassengerAppLogFile "/var/home/rasagaja/backendhidden/logs"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
