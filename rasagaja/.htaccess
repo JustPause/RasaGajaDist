@@ -48,9 +48,9 @@ Options -Indexes
 	Require all denied
 </FilesMatch>
 
-<If "%{REQUEST_URI} =~ m#^/backend#">
-    Require all denied
-</If>
+# <If "%{REQUEST_URI} =~ m#^/backend#">
+#     Require all denied
+# </If>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On

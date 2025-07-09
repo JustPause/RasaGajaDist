@@ -1,0 +1,26 @@
+import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_WWt00ON-.mjs';
+import 'kleur/colors';
+import { $ as $$LayoutSecondary } from '../../chunks/LayoutSecondary_BwrVyyen.mjs';
+export { renderers } from '../../renderers.mjs';
+
+const $$Astro = createAstro("https://rasagaja.lt");
+const $$500 = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$500;
+  const { error } = Astro2.props;
+  return renderTemplate`${renderComponent($$result, "Layout", $$LayoutSecondary, { "title": "500" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="absolute w-full h-[calc(100vh-64px)] flex items-center justify-center"> <p class="rotate-12 header3 text-8xl hover:-rotate-12 duration-1000"> ${error instanceof Error ? error.message : "Unknown error"} </p> </div> ` })}`;
+}, "/home/justinas/Programming/RasoSvetaine/src/pages/errors/500.astro", void 0);
+
+const $$file = "/home/justinas/Programming/RasoSvetaine/src/pages/errors/500.astro";
+const $$url = "/errors/500";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: $$500,
+    file: $$file,
+    url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
