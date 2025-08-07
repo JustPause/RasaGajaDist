@@ -1,6 +1,6 @@
-import fs from "fs";
+const fs = require("fs");
 
-export class DownloadedFiles {
+class DownloadedFiles {
   constructor() {
     this._registry = new Map();
   }
@@ -70,3 +70,4 @@ export class DownloadedFiles {
     }
   }
 }
+module.exports = { DownloadedFiles };

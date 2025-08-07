@@ -1,9 +1,9 @@
-import fsp from "fs/promises";
-import fs from "fs";
-import path from "path";
-import process from "process";
-import { authenticate } from "@google-cloud/local-auth";
-import { google } from "googleapis";
+const fsp = require("fs/promises");
+const fs = require("fs");
+const path = require("path");
+const process = require( "process");
+const {authenticate} = require( "@google-cloud/local-auth");
+const { google} = require( "googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive"];
 const TOKEN_PATH = path.join(process.cwd(), "/env/token.json");
@@ -76,7 +76,7 @@ async function googleDrive() {
   return files;
 }
 
-export async function listFiles(authClient) {
+async function listFiles(authClient) {
   const files = await googleDrive();
 
   if (files.length === 0) {
@@ -90,7 +90,7 @@ export async function listFiles(authClient) {
   });
 }
 
-export async function streamFile(fileId) {
+async function streamFile(fileId) {
   const auth = await loadSavedCredentialsIfExist();
   const service = google.drive({ version: "v3", auth });
 
@@ -102,7 +102,7 @@ export async function streamFile(fileId) {
   return res.data;
 }
 
-export async function getBooks() {
+async function getBooks() {
   const files = await googleDrive();
 
   let returnData = [];
@@ -124,7 +124,7 @@ export async function getBooks() {
   return returnData;
 }
 
-export async function findIdByName(name) {
+ async function findIdByName(name) {
   const files = await googleDrive();
 
   let returnData = {};
@@ -145,3 +145,5 @@ export async function findIdByName(name) {
 
   return null;
 }
+
+module.exports = { listFiles,streamFile,getBooks,findIdByName };

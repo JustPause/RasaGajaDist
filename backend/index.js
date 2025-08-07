@@ -1,23 +1,25 @@
+const { findIdByName, getBooks, streamFile } = require("./googleDrive.js");
+const { DownloadedFiles } = require("./DownloadedFiles.js");
+
 const express = require("express");
+
 const app = express();
-const port = process.env.PORT || 3000;
-const prefix = "/backend";
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
-let Chapetes = [];
+const downloads = new DownloadedFiles();
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}`);
+app.listen(() => {
+  console.log(`Server listening`);
 });
 
-app.get(prefix + "/", async (req, res) => {
+app.get("/", async (req, res) => {
   // console.log(await listFiles());
 
   res.send(req.ip);
   console.log("init get:", req.ip);
 });
 
-app.get(prefix + "/books", async (req, res) => {
+app.get("/books", async (req, res) => {
   try {
     res.json(Books);
   } catch (error) {
@@ -26,12 +28,12 @@ app.get(prefix + "/books", async (req, res) => {
   }
 });
 
-app.get(prefix + "/books/:books", async (req, res) => {
+app.get("/books/:books", async (req, res) => {
   try {
     const bookName = req.params.books;
 
     if (Books.includes(bookName)) {
-      Chapetes = await getBooks();
+      let Chapetes = await getBooks();
       res.json(Chapetes);
     } else {
       console.error("Error fetching book:", bookName);
@@ -43,7 +45,7 @@ app.get(prefix + "/books/:books", async (req, res) => {
   }
 });
 
-app.get(prefix + "/books/:book/:chapeter", async (req, res) => {
+app.get("/books/:book/:chapeter", async (req, res) => {
   try {
     const WhatWasSelected = req.params.chapeter;
 
