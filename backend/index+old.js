@@ -7,7 +7,6 @@ import express from "express";
 const app = express();
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
-let Chapetes = [];
 export const downloads = new DownloadedFiles();
 
 app.listen(() => {
@@ -35,7 +34,7 @@ app.get("/books/:books", async (req, res) => {
     const bookName = req.params.books;
 
     if (Books.includes(bookName)) {
-      Chapetes = await getBooks();
+      let Chapetes = await getBooks();
       res.json(Chapetes);
     } else {
       console.error("Error fetching book:", bookName);

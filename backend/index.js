@@ -1,45 +1,74 @@
-const http = require("http");
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 3000;
+const prefix = "/backend";
 
-let backendUrl = "/backend"
-const Books = ["nemunai-teka-i-drakono-kalnus"]; // get a list form google drive. for now this will work
+let Books = ["nemunai-teka-i-drakono-kalnus"];
+let Chapetes = [];
 
-const server = http.createServer((req, res) => {
-  if (req.url === backendUrl) {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    console.log("req rawHeaders:", req.rawHeaders);
-    res.end("Backend is running!\n");
-  
-  } else if (req.url === backendUrl + "/books") {
-    
-    try {
-      const json = JSON.stringify(Books);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(json);
+app.listen(port, () => {
+  console.log(`App running on port ${port}`);
+});
 
-    } catch (error) {
-      console.error("Error fetching names:", error);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Server error");
+app.get(prefix + "/", async (req, res) => {
+  // console.log(await listFiles());
 
-    }
+  res.send(req.ip);
+  console.log("init get:", req.ip);
+});
 
-  } 
-  
-  else if (req.url === backendUrl + "/books/:book") {
-
-    const bookName = req.params.book;
-    console.log("Book slug:", bookName);
-    res.send(`You requested the book: ${bookName}`);
-
-
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not found");
-  
+app.get(prefix + "/books", async (req, res) => {
+  try {
+    res.json(Books);
+  } catch (error) {
+    console.error("Error fetching names:", error);
+    res.status(500).send("Server error");
   }
 });
 
-// server.listen(console.log("Server listening: " + Date.now()));
-server.listen(3000, () => {
-  console.log("Server listening: " + Date.now());
+app.get(prefix + "/books/:books", async (req, res) => {
+  try {
+    const bookName = req.params.books;
+
+    if (Books.includes(bookName)) {
+      Chapetes = await getBooks();
+      res.json(Chapetes);
+    } else {
+      console.error("Error fetching book:", bookName);
+      res.status(404).send("No book of that name found");
+    }
+  } catch (error) {
+    console.error("Error fetching book:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/books/:book/:chapeter", async (req, res) => {
+  try {
+    const WhatWasSelected = req.params.chapeter;
+
+    const ListOfChapetes = await getBooks();
+
+    if (ListOfChapetes.includes(WhatWasSelected)) {
+      const id = await findIdByName(WhatWasSelected);
+      const stream = await streamFile(id);
+
+      res.setHeader("Content-Type", "audio/wav");
+      res.setHeader("Transfer-Encoding", "chunked");
+      res.setHeader("Cache-Control", "no-cache");
+
+      stream.on("error", (err) => {
+        console.error("File streaming error:", err);
+        res.status(404).send("File not found");
+      });
+
+      stream.pipe(res);
+    } else {
+      console.error("Error fetching chapeter:", Chapeter);
+      res.status(404).send("No chapeter of that name found");
+    }
+  } catch (error) {
+    console.error("Error fetching chapeter:", error);
+    res.status(500).send("Server error");
+  }
 });
