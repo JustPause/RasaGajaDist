@@ -1,25 +1,24 @@
 const { findIdByName, getBooks, streamFile } = require("./googleDrive.js");
-const { DownloadedFiles } = require("./DownloadedFiles.js");
-
 const express = require("express");
-
 const app = express();
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
-const downloads = new DownloadedFiles();
 
 app.listen(3000,() => {
   console.log(`Server listening`);
 });
 
-app.get("/", async (req, res) => {
+app.get(prefix+"/", async (req, res) => {
   // console.log(await listFiles());
-
+  fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    agent,
+  });
   res.send(req.ip);
   console.log("init get:", req.ip);
 });
 
-app.get("/books", async (req, res) => {
+app.get(prefix+"/books", async (req, res) => {
   try {
     res.json(Books);
   } catch (error) {
@@ -28,7 +27,7 @@ app.get("/books", async (req, res) => {
   }
 });
 
-app.get("/books/:books", async (req, res) => {
+app.get(prefix+"/books/:books", async (req, res) => {
   
   try {
     const bookName = req.params.books;
@@ -46,7 +45,7 @@ app.get("/books/:books", async (req, res) => {
   }
 });
 
-app.get("/books/:book/:chapeter", async (req, res) => {
+app.get(prefix+"/books/:book/:chapeter", async (req, res) => {
   try {
     const WhatWasSelected = req.params.chapeter;
 
