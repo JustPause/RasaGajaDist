@@ -1,132 +1,49 @@
-App 2692839 output: /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80
-App 2692839 output: 	return originalRequire.apply(this, arguments);
-App 2692839 output:                         ^
-App 2692839 output: Error [ERR_REQUIRE_ESM]: require() of ES Module /var/home/rasagaja/backend/index.js from /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js not supported.
-App 2692839 output: Instead change the require of index.js in /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js to a dynamic import() which is available in all CommonJS modules.
-App 2692839 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2692839 output:     at loadApplication (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:243:2)
-App 2692839 output:     at setupEnvironment (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:214:2)
-App 2692839 output:     at Object.<anonymous> (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:133:1) {
-App 2692839 output:   code: 'ERR_REQUIRE_ESM'
-App 2692839 output: }
-App 2692839 output: Node.js v18.16.0
-App 2694867 output: node:internal/modules/cjs/loader:1078
-App 2694867 output:   throw err;
-App 2694867 output:   ^
-App 2694867 output: Error: Cannot find module 'express'
-App 2694867 output: Require stack:
-App 2694867 output: - /var/home/rasagaja/backend/index.js
-App 2694867 output: - /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js
-App 2694867 output:     at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
-App 2694867 output:     at Module._load (node:internal/modules/cjs/loader:920:27)
-App 2694867 output:     at Module.require (node:internal/modules/cjs/loader:1141:19)
-App 2694867 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2694867 output:     at require (node:internal/modules/cjs/helpers:110:18)
-App 2694867 output:     at Object.<anonymous> (/var/home/rasagaja/backend/index.js:1:17)
-App 2694867 output:     at Module._compile (node:internal/modules/cjs/loader:1254:14)
-App 2694867 output:     at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-App 2694867 output:     at Module.load (node:internal/modules/cjs/loader:1117:32)
-App 2694867 output:     at Module._load (node:internal/modules/cjs/loader:958:12) {
-App 2694867 output:   code: 'MODULE_NOT_FOUND',
-App 2694867 output:   requireStack: [
-App 2694867 output:     '/var/home/rasagaja/backend/index.js',
-App 2694867 output:     '/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js'
-App 2694867 output:   ]
-App 2694867 output: }
-App 2694867 output: Node.js v18.16.0
-App 2695252 output: node:internal/modules/cjs/loader:1078
-App 2695252 output:   throw err;
-App 2695252 output:   ^
-App 2695252 output: Error: Cannot find module 'express'
-App 2695252 output: Require stack:
-App 2695252 output: - /var/home/rasagaja/backend/index.js
-App 2695252 output: - /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js
-App 2695252 output:     at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
-App 2695252 output:     at Module._load (node:internal/modules/cjs/loader:920:27)
-App 2695252 output:     at Module.require (node:internal/modules/cjs/loader:1141:19)
-App 2695252 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2695252 output:     at require (node:internal/modules/cjs/helpers:110:18)
-App 2695252 output:     at Object.<anonymous> (/var/home/rasagaja/backend/index.js:1:17)
-App 2695252 output:     at Module._compile (node:internal/modules/cjs/loader:1254:14)
-App 2695252 output:     at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-App 2695252 output:     at Module.load (node:internal/modules/cjs/loader:1117:32)
-App 2695252 output:     at Module._load (node:internal/modules/cjs/loader:958:12) {
-App 2695252 output:   code: 'MODULE_NOT_FOUND',
-App 2695252 output:   requireStack: [
-App 2695252 output:     '/var/home/rasagaja/backend/index.js',
-App 2695252 output:     '/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js'
-App 2695252 output:   ]
-App 2695252 output: }
-App 2695252 output: Node.js v18.16.0
-App 2722993 output: node:internal/modules/cjs/loader:1078
-App 2722993 output:   throw err;
-App 2722993 output:   ^
-App 2722993 output: Error: Cannot find module 'express'
-App 2722993 output: Require stack:
-App 2722993 output: - /var/home/rasagaja/backend/index.js
-App 2722993 output: - /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js
-App 2722993 output:     at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
-App 2722993 output:     at Module._load (node:internal/modules/cjs/loader:920:27)
-App 2722993 output:     at Module.require (node:internal/modules/cjs/loader:1141:19)
-App 2722993 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2722993 output:     at require (node:internal/modules/cjs/helpers:110:18)
-App 2722993 output:     at Object.<anonymous> (/var/home/rasagaja/backend/index.js:1:17)
-App 2722993 output:     at Module._compile (node:internal/modules/cjs/loader:1254:14)
-App 2722993 output:     at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-App 2722993 output:     at Module.load (node:internal/modules/cjs/loader:1117:32)
-App 2722993 output:     at Module._load (node:internal/modules/cjs/loader:958:12) {
-App 2722993 output:   code: 'MODULE_NOT_FOUND',
-App 2722993 output:   requireStack: [
-App 2722993 output:     '/var/home/rasagaja/backend/index.js',
-App 2722993 output:     '/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js'
-App 2722993 output:   ]
-App 2722993 output: }
-App 2722993 output: Node.js v18.16.0
-App 2724986 output: node:internal/modules/cjs/loader:1078
-App 2724986 output:   throw err;
-App 2724986 output:   ^
-App 2724986 output: Error: Cannot find module 'express'
-App 2724986 output: Require stack:
-App 2724986 output: - /var/home/rasagaja/backend/index.js
-App 2724986 output: - /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js
-App 2724986 output:     at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
-App 2724986 output:     at Module._load (node:internal/modules/cjs/loader:920:27)
-App 2724986 output:     at Module.require (node:internal/modules/cjs/loader:1141:19)
-App 2724986 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2724986 output:     at require (node:internal/modules/cjs/helpers:110:18)
-App 2724986 output:     at Object.<anonymous> (/var/home/rasagaja/backend/index.js:1:17)
-App 2724986 output:     at Module._compile (node:internal/modules/cjs/loader:1254:14)
-App 2724986 output:     at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-App 2724986 output:     at Module.load (node:internal/modules/cjs/loader:1117:32)
-App 2724986 output:     at Module._load (node:internal/modules/cjs/loader:958:12) {
-App 2724986 output:   code: 'MODULE_NOT_FOUND',
-App 2724986 output:   requireStack: [
-App 2724986 output:     '/var/home/rasagaja/backend/index.js',
-App 2724986 output:     '/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js'
-App 2724986 output:   ]
-App 2724986 output: }
-App 2724986 output: Node.js v18.16.0
-App 2726018 output: node:internal/modules/cjs/loader:1078
-App 2726018 output:   throw err;
-App 2726018 output:   ^
-App 2726018 output: Error: Cannot find module 'express'
-App 2726018 output: Require stack:
-App 2726018 output: - /var/home/rasagaja/backend/index.js
-App 2726018 output: - /opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js
-App 2726018 output:     at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
-App 2726018 output:     at Module._load (node:internal/modules/cjs/loader:920:27)
-App 2726018 output:     at Module.require (node:internal/modules/cjs/loader:1141:19)
-App 2726018 output:     at Module.require (/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js:80:25)
-App 2726018 output:     at require (node:internal/modules/cjs/helpers:110:18)
-App 2726018 output:     at Object.<anonymous> (/var/home/rasagaja/backend/index.js:1:17)
-App 2726018 output:     at Module._compile (node:internal/modules/cjs/loader:1254:14)
-App 2726018 output:     at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-App 2726018 output:     at Module.load (node:internal/modules/cjs/loader:1117:32)
-App 2726018 output:     at Module._load (node:internal/modules/cjs/loader:958:12) {
-App 2726018 output:   code: 'MODULE_NOT_FOUND',
-App 2726018 output:   requireStack: [
-App 2726018 output:     '/var/home/rasagaja/backend/index.js',
-App 2726018 output:     '/opt/cpanel/ea-ruby27/root/usr/share/passenger/helper-scripts/node-loader.js'
-App 2726018 output:   ]
-App 2726018 output: }
-App 2726018 output: Node.js v18.16.0
+App 3107241 output: Server listening: 1754582818365
+App 3107241 output: req rawHeaders: [
+App 3107241 output:   'Connection',
+App 3107241 output:   'close',
+App 3107241 output:   'user-agent',
+App 3107241 output:   'Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0',
+App 3107241 output:   'priority',
+App 3107241 output:   'u=0, i',
+App 3107241 output:   'cache-control',
+App 3107241 output:   'no-cache',
+App 3107241 output:   'sec-fetch-dest',
+App 3107241 output:   'document',
+App 3107241 output:   'accept-encoding',
+App 3107241 output:   'gzip, deflate, br, zstd',
+App 3107241 output:   'dnt',
+App 3107241 output:   '1',
+App 3107241 output:   'sec-fetch-user',
+App 3107241 output:   '?1',
+App 3107241 output:   'sec-fetch-site',
+App 3107241 output:   'none',
+App 3107241 output:   'pragma',
+App 3107241 output:   'no-cache',
+App 3107241 output:   'sec-gpc',
+App 3107241 output:   '1',
+App 3107241 output:   'accept',
+App 3107241 output:   'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+App 3107241 output:   'accept-language',
+App 3107241 output:   'en-US,en;q=0.5',
+App 3107241 output:   'sec-fetch-mode',
+App 3107241 output:   'navigate',
+App 3107241 output:   'te',
+App 3107241 output:   'trailers',
+App 3107241 output:   'host',
+App 3107241 output:   'rasagaja.lt',
+App 3107241 output:   'x-https',
+App 3107241 output:   '1',
+App 3107241 output:   'upgrade-insecure-requests',
+App 3107241 output:   '1',
+App 3107241 output:   'X-Forwarded-Proto',
+App 3107241 output:   'https',
+App 3107241 output:   '!~Passenger-Proto',
+App 3107241 output:   'https',
+App 3107241 output:   'X-Forwarded-For',
+App 3107241 output:   '78.62.131.181',
+App 3107241 output:   '!~Passenger-Client-Address',
+App 3107241 output:   '78.62.131.181',
+App 3107241 output:   '!~Passenger-Envvars',
+App 3107241 output:   'VU5JUVVFX0lEAGFKVFBJVWM0ZHlvejBFbVJSeHFBYlFBQTF4TQBTQ1JJUFRfVVJMAC9iYWNrZW5kAFNDUklQVF9VUkkAaHR0cHM6Ly9yYXNhZ2FqYS5sdC9iYWNrZW5kAEhUVFBTAG9uAFNTTF9UTFNfU05JAHJhc2FnYWphLmx0AEhUVFAyAG9uAEgyUFVTSABvZmYASDJfUFVTSABvZmYASDJfUFVTSEVEAABIMl9QVVNIRURfT04AAEgyX1NUUkVBTV9JRAAzAEgyX1NUUkVBTV9UQUcAMzEwNjY0MC0xNi0zAA=='
+App 3107241 output: ]
