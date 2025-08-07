@@ -1,20 +1,24 @@
-const fsp = require("fs/promises");
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
-const process = require( "process");
-const {authenticate} = require( "@google-cloud/local-auth");
-const { google} = require( "googleapis");
+const process = require("process");
+const { authenticate } = require("@google-cloud/local-auth");
+const { google } = require("googleapis");
 
-const SCOPES = ["https://www.googleapis.com/auth/drive"];
-const TOKEN_PATH = path.join(process.cwd(), "/env/token.json");
+const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
+const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
 const CREDENTIALS_PATH = path.join(
   process.cwd(),
-  "/env/client_secret_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json"
+  "env/client_secret_2_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json"
 );
 
+/**
+ * Reads previously authorized credentials from the save file.
+ *
+ * @return {Promise<OAuth2Client|null>}
+ */
 async function loadSavedCredentialsIfExist() {
   try {
-    const content = await fsp.readFile(TOKEN_PATH);
+    const content = await fs.readFile(TOKEN_PATH);
     const credentials = JSON.parse(content);
     return google.auth.fromJSON(credentials);
   } catch (err) {
@@ -22,8 +26,14 @@ async function loadSavedCredentialsIfExist() {
   }
 }
 
+/**
+ * Serializes credentials to a file compatible with GoogleAuth.fromJSON.
+ *
+ * @param {OAuth2Client} client
+ * @return {Promise<void>}
+ */
 async function saveCredentials(client) {
-  const content = await fsp.readFile(CREDENTIALS_PATH);
+  const content = await fs.readFile(CREDENTIALS_PATH);
   const keys = JSON.parse(content);
   const key = keys.installed || keys.web;
   const payload = JSON.stringify({
@@ -32,32 +42,32 @@ async function saveCredentials(client) {
     client_secret: key.client_secret,
     refresh_token: client.credentials.refresh_token,
   });
-  await fsp.writeFile(TOKEN_PATH, payload);
+  await fs.writeFile(TOKEN_PATH, payload);
 }
 
+/**
+ * Load or request or authorization to call APIs.
+ *
+ */
 async function authorize() {
   let client = await loadSavedCredentialsIfExist();
-
   if (client) {
     return client;
   }
-
   client = await authenticate({
     scopes: SCOPES,
     keyfilePath: CREDENTIALS_PATH,
   });
-
   if (client.credentials) {
     await saveCredentials(client);
   }
-
   return client;
 }
 
 // Uper move to class
 
 async function googleDrive() {
-  const drive = google.drive({ version: "v3", auth: await authorize() });
+  const drive = await accessDrive()
   const folderId = "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI";
 
   const res = await drive.files.list({
@@ -76,7 +86,7 @@ async function googleDrive() {
   return files;
 }
 
-async function listFiles(authClient) {
+async function listFiles() {
   const files = await googleDrive();
 
   if (files.length === 0) {
@@ -90,11 +100,14 @@ async function listFiles(authClient) {
   });
 }
 
-async function streamFile(fileId) {
-  const auth = await loadSavedCredentialsIfExist();
-  const service = google.drive({ version: "v3", auth });
+async function accessDrive() {
+  return google.drive({ version: "v3", auth: await authorize() });
+}
 
-  const res = await service.files.get(
+async function streamFile(fileId) {
+  const drive = await accessDrive();
+
+  const res = await drive.files.get(
     { fileId, alt: "media" },
     { responseType: "stream" }
   );
@@ -124,7 +137,7 @@ async function getBooks() {
   return returnData;
 }
 
- async function findIdByName(name) {
+async function findIdByName(name) {
   const files = await googleDrive();
 
   let returnData = {};
@@ -146,4 +159,4 @@ async function getBooks() {
   return null;
 }
 
-module.exports = { listFiles,streamFile,getBooks,findIdByName };
+module.exports = { listFiles, streamFile, getBooks, findIdByName };
