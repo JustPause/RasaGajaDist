@@ -1,19 +1,15 @@
 const { findIdByName, getBooks, streamFile } = require("./googleDrive.js");
 const express = require("express");
 const app = express();
+const prefix = "/backend";
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
 
-app.listen(3000,() => {
-  console.log(`Server listening`);
-});
+app.listen(
+  console.log(`Server listening`)
+);
 
 app.get(prefix+"/", async (req, res) => {
-  // console.log(await listFiles());
-  fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    agent,
-  });
   res.send(req.ip);
   console.log("init get:", req.ip);
 });
