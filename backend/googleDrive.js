@@ -1,6 +1,9 @@
 const fs = require("fs").promises;
 const path = require("path");
 const process = require("process");
+
+process.env.NODE_EXTRA_CA_CERTS = "/var/home/rasagaja/backend/cacert.crt";
+
 const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
 
