@@ -1,4 +1,3 @@
----
 deployment:
  tasks:
  - export DEPLOYPATH=/var/home/rasagaja
