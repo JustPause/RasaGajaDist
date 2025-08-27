@@ -1,4 +1,4 @@
 deployment:
- tasks:
- - export DEPLOYPATH=/var/home/rasagaja
- - /bin/cp -R rasagaja $DEPLOYPATH
+  tasks:
+    - export DEPLOYPATH=/var/home/rasagaja
+    - /bin/cp -R rasagaja $DEPLOYPATH
