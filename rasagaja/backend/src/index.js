@@ -5,16 +5,16 @@ const prefix = "/backend";
 
 let Books = ["nemunai-teka-i-drakono-kalnus"];
 
-app.listen(
-  console.log(`Server listening`)
-);
+const server = app.listen(0, () => {
+  console.log(`Server listening on ${server.address().port}`);
+});
 
-app.get(prefix+"/", async (req, res) => {
+app.get(prefix + "/", async (req, res) => {
   res.send(req.ip);
   console.log("init get:", req.ip);
 });
 
-app.get(prefix+"/books", async (req, res) => {
+app.get(prefix + "/books", async (req, res) => {
   try {
     res.json(Books);
   } catch (error) {
@@ -23,8 +23,7 @@ app.get(prefix+"/books", async (req, res) => {
   }
 });
 
-app.get(prefix+"/books/:books", async (req, res) => {
-  
+app.get(prefix + "/books/:books", async (req, res) => {
   try {
     const bookName = req.params.books;
 
@@ -41,7 +40,7 @@ app.get(prefix+"/books/:books", async (req, res) => {
   }
 });
 
-app.get(prefix+"/books/:book/:chapeter", async (req, res) => {
+app.get(prefix + "/books/:book/:chapeter", async (req, res) => {
   try {
     const WhatWasSelected = req.params.chapeter;
 
