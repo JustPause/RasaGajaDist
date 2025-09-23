@@ -12,10 +12,10 @@ deployment:
     - /bin/cp -R rasagaja/backend/* $DEPLOYPATH_backend
     - /bin/cp rasagaja/backend/.htaccess $DEPLOYPATH_backend
 
-    # - rm -rf $DEPLOYPATH_public_html/*
-    # - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
+    - rm -rf $DEPLOYPATH_public_html/*
+    - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
 
-    # - rm -rf $DEPLOYPATH_public_html/backend/src/
-    # - rm -rf $DEPLOYPATH_public_html/backend/.gitignore
-    # - rm -rf $DEPLOYPATH_public_html/backend/ReadMe.md
-    # - rm -rf $DEPLOYPATH_public_html/backend/TODO.md
+    - rm -rf $DEPLOYPATH_public_html/backend/src/
+    - rm -f $DEPLOYPATH_public_html/backend/.gitignore
+    - rm -f $DEPLOYPATH_public_html/backend/ReadMe.md
+    - rm -f $DEPLOYPATH_public_html/backend/TODO.md
