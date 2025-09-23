@@ -4,14 +4,15 @@ deployment:
     - export DEPLOYPATH_public_html=/var/home/rasagaja/public_html/
     - export DEPLOYPATH_backend=/var/home/rasagaja/backend_pre/
 
-    - rm -rf $DEPLOYPATH_backend/src/
-    - rm -rf $DEPLOYPATH_backend/.gitignore
-    - rm -rf $DEPLOYPATH_backend/.htaccess
-    - rm -rf $DEPLOYPATH_backend/ReadMe.md
-    - rm -rf $DEPLOYPATH_backend/TODO.md
+    - /bin/rm -rf $DEPLOYPATH_backend/src/
+    - /bin/rm -rf $DEPLOYPATH_backend/.gitignore
+    - /bin/rm -rf $DEPLOYPATH_backend/.htaccess
+    - /bin/rm -rf $DEPLOYPATH_backend/ReadMe.md
+    - /bin/rm -rf $DEPLOYPATH_backend/TODO.md
 
     - /bin/mv rasagaja/backend/* $DEPLOYPATH_backend
     - /bin/cp rasagaja/backend/.htaccess $DEPLOYPATH_backend
+    - /bin/rm rasagaja/backend/.gitignore
 
-    # - rm -rf $DEPLOYPATH_public_html/*
-    # - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
+    - /bin/rm -rf $DEPLOYPATH_public_html/*
+    - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
