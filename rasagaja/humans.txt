@@ -1,6 +1,0 @@
-/* Developer */
-Developer: Justinas Stankūnas
-Site: rasagaja.lt
-
-/* NOTE */
-Built with care. By a student Developer
