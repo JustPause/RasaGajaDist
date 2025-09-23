@@ -1,0 +1,14 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_EXTRA_CA_CERTS=combined-ca.crt NODE_ENV=production node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "express": "^4.21.2",
+    "googleapis": "^105.0.0"
+  }
+}
