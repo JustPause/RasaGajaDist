@@ -2,7 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH_public_html=/var/home/rasagaja/public_html/
-    # - export DEPLOYPATH_backend=/var/home/rasagaja/backend/
+    - export DEPLOYPATH_backend=/var/home/rasagaja/backend_pre/
     - rm -rf $DEPLOYPATH_public_html/*
     - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
 
