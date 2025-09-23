@@ -10,7 +10,8 @@ deployment:
     - rm -rf $DEPLOYPATH_backend/ReadMe.md
     - rm -rf $DEPLOYPATH_backend/TODO.md
 
-    - /bin/mv rasagaja/backend/. $DEPLOYPATH_backend
+    - /bin/mv rasagaja/backend/* $DEPLOYPATH_backend
+    - /bin/cp rasagaja/backend/.htaccess $DEPLOYPATH_backend
 
     # - rm -rf $DEPLOYPATH_public_html/*
     # - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
