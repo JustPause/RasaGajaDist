@@ -1,5 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/var/home/rasagaja/public_html_pre_temp/
+    - export DEPLOYPATH=/var/home/rasagaja/public_html/
+    - rm -rf $DEPLOYPATH/*
     - /bin/cp -R rasagaja/* $DEPLOYPATH
