@@ -6,8 +6,8 @@ const prefix = "/backend";
 let knygos = ["nemunai-teka-i-drakono-kalnus"];
 let Glob_Chapetes;
 
-app.listen(async () => {
-  console.log("Server listening on http://localhost:8001");
+app.listen(8001, async () => {
+  console.log("Server listening");
   Glob_Chapetes = await getBooks();
   console.log("Books loaded:", Glob_Chapetes.length);
 });
@@ -20,7 +20,6 @@ app.get(prefix + "/", async (req, res) => {
 });
 
 app.get(prefix + "/knygos", async (req, res) => {
-  const start = Date.now();
   try {
     const start = Date.now();
     res.json(knygos);
@@ -29,11 +28,9 @@ app.get(prefix + "/knygos", async (req, res) => {
     console.error("Error fetching names:", error);
     res.status(500).send("Server error");
   }
-  console.log("knygos:", Date.now() - start, "ms");
 });
 
 app.get(prefix + "/:knyga", async (req, res) => {
-  const start = Date.now();
   try {
     const bookName = req.params.knyga;
 
@@ -47,11 +44,9 @@ app.get(prefix + "/:knyga", async (req, res) => {
     console.error("Error fetching book:", error);
     res.status(500).send("Server error");
   }
-  console.log("knyga:", Date.now() - start, "ms");
 });
 
 app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
-  const start = Date.now();
   try {
     const WhatWasSelected = req.params.chapeter;
     if (Glob_Chapetes.includes(WhatWasSelected)) {
@@ -78,5 +73,4 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     console.error("Error fetching chapeter:", error);
     res.status(500).send("Server error");
   }
-  console.log("knyga/chapeter:", Date.now() - start, "ms");
 });
