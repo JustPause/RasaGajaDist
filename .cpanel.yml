@@ -5,10 +5,13 @@ deployment:
     - export DEPLOYPATH_backend=/var/home/rasagaja/backend/
 
     - rm -rf $DEPLOYPATH_backend/src/
-    - rm -f $DEPLOYPATH_backend/env
+    - rm -rf $DEPLOYPATH_backend/tmp/
     - rm -f $DEPLOYPATH_backend/logs
     - rm -f $DEPLOYPATH_backend/package.json
     - rm -f $DEPLOYPATH_backend/package-lock.json
+    - rm -f $DEPLOYPATH_backend/.htaccess
+    - rm -f $DEPLOYPATH_backend/ReadMe.md
+    - rm -f $DEPLOYPATH_backend/TODO.md
     - rm -f $DEPLOYPATH_backend/index.js
 
     - /bin/cp -R rasagaja/backend/* $DEPLOYPATH_backend
