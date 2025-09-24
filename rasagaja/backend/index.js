@@ -1,4 +1,4 @@
-const { findIdByName, getBooks, streamFile } = require("./googleDrive.js");
+const { findIdByName, getBooks, streamFile } = require("./src/googleDrive.js");
 const express = require("express");
 const app = express();
 const prefix = "/backend";
