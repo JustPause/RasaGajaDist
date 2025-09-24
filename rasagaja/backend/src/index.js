@@ -5,8 +5,8 @@ const prefix = "/backend";
 
 let knygos = ["nemunai-teka-i-drakono-kalnus"];
 
-app.listen(() => {
-  console.log(`Server listening on`);
+app.listen(8001, () => {
+  console.log("Server listening on http://localhost:8001");
 });
 
 app.get(prefix + "/", async (req, res) => {
