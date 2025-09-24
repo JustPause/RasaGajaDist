@@ -14,6 +14,7 @@ deployment:
 
     - rm -rf $DEPLOYPATH_public_html/*
     - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
+    - /bin/cp -R rasagaja/.htaccess $DEPLOYPATH_public_html/.htaccess
 
     - rm -rf $DEPLOYPATH_public_html/backend/src/
     - rm -f $DEPLOYPATH_public_html/backend/.gitignore
