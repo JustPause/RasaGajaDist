@@ -11,7 +11,7 @@ const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
 const CREDENTIALS_PATH = path.join(
   process.cwd(),
-  "env/client_secret_2_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json"
+  "env/client_secret_2_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json",
 );
 
 /**
@@ -70,15 +70,14 @@ async function authorize() {
 // Uper move to class
 
 async function googleDrive() {
-  const drive = await accessDrive()
+  const drive = await accessDrive();
   const folderId = "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI";
 
   const res = await drive.files.list({
     q: `'${folderId}' in parents`,
-    pageSize: 1000,
+    pageSize: 150,
     fields: "nextPageToken, files(id, name)",
   });
-
   const files = res.data.files;
 
   if (files.length === 0) {
@@ -112,7 +111,7 @@ async function streamFile(fileId) {
 
   const res = await drive.files.get(
     { fileId, alt: "media" },
-    { responseType: "stream" }
+    { responseType: "stream" },
   );
 
   return res.data;
@@ -142,7 +141,6 @@ async function getBooks() {
 
 async function findIdByName(name) {
   const files = await googleDrive();
-
   let returnData = {};
 
   files.forEach((file) => {
