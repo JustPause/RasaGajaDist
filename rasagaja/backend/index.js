@@ -9,9 +9,7 @@ const express = require("express");
 const app = express();
 const prefix = "/backend";
 
-let knygos = [
-  ["nemunai-teka-i-drakono-kalnus", "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI"],
-];
+let knygos = ["nemunai-teka-i-drakono-kalnus", "klausyti-ištraukos"];
 
 app.listen(8002, async () => {
   console.log("Server listening");
@@ -36,9 +34,9 @@ app.get(prefix + "/:knyga", async (req, res) => {
   try {
     const bookName = req.params.knyga;
 
-    if (bookName === knygos[0][0]) {
+    if (bookName === knygos[0]) {
       res.json(await getBookChapterList(bookName));
-    } else if (bookName === "klausyti-ištraukos") {
+    } else if (bookName === knygos[1]) {
       res.json(await getBookChapterList(bookName));
     } else {
       console.error("Error fetching book:", bookName);
