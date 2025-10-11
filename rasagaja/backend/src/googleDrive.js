@@ -67,10 +67,9 @@ async function authorize() {
   return client;
 }
 
-// Uper move to class
-
 async function googleDrive() {
   const drive = await accessDrive();
+
   const folderId = "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI";
 
   const res = await drive.files.list({
@@ -117,10 +116,18 @@ async function streamFile(fileId) {
   return res.data;
 }
 
-async function getBooks() {
+async function getBooksList() {
+  return ["nemunai-teka-i-drakono-kalnus", "klausyti-ištraukos"];
+}
+
+/**
+ * Load and list books List, directorys in the drive. ad it splits the name to id, Chapeter name
+ *
+ */
+async function getBookChapterList(bookName) {
   const files = await googleDrive();
 
-  let returnData = [];
+  let returnData = new Map();
 
   files.sort((a, b) => {
     const _a = parseInt(a.name.split(".")[0]);
@@ -128,15 +135,29 @@ async function getBooks() {
     return _a - _b;
   });
 
-  files.map((file) => {
-    const name = file.name.split(".")[1]?.trim();
+  if (bookName === "nemunai-teka-i-drakono-kalnus") {
+    files.map((file) => {
+      const id = file.name.split(".")[0]?.trim();
+      const name = file.name.split(".")[1]?.trim();
 
-    if (name) {
-      returnData.push(name);
-    }
-  });
+      if (name) {
+        returnData.set(id, name);
+      }
+    });
+  } else if (bookName === "klausyti-ištraukos") {
+    listOfTileIds = [1, 5, 11, 20, 32, 64];
 
-  return returnData;
+    files.map((file) => {
+      const id = file.name.split(".")[0]?.trim();
+      const name = file.name.split(".")[1]?.trim();
+
+      if (name && listOfTileIds.includes(Number(id))) {
+        returnData.set(id, name);
+      }
+    });
+  }
+
+  return Object.fromEntries(returnData);
 }
 
 async function findIdByName(name) {
@@ -160,4 +181,10 @@ async function findIdByName(name) {
   return null;
 }
 
-module.exports = { listFiles, streamFile, getBooks, findIdByName };
+module.exports = {
+  listFiles,
+  streamFile,
+  getBookChapterList,
+  getBooksList,
+  findIdByName,
+};

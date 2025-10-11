@@ -1,15 +1,20 @@
-const { findIdByName, getBooks, streamFile } = require("./src/googleDrive.js");
+const { ideahub } = require("googleapis/build/src/apis/ideahub/index.js");
+const {
+  findIdByName,
+  getBooksList,
+  getBookChapterList,
+  streamFile,
+} = require("./src/googleDrive.js");
 const express = require("express");
 const app = express();
 const prefix = "/backend";
 
-let knygos = ["nemunai-teka-i-drakono-kalnus"];
-let Glob_Chapetes;
+let knygos = [
+  ["nemunai-teka-i-drakono-kalnus", "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI"],
+];
 
-app.listen(8001, async () => {
+app.listen(8002, async () => {
   console.log("Server listening");
-  Glob_Chapetes = await getBooks();
-  console.log("Books loaded:", Glob_Chapetes.length);
 });
 
 app.get(prefix + "/", async (req, res) => {
@@ -21,11 +26,8 @@ app.get(prefix + "/", async (req, res) => {
 
 app.get(prefix + "/knygos", async (req, res) => {
   try {
-    const start = Date.now();
-    res.json(knygos);
-    console.log("res.json:", Date.now() - start, "ms");
+    res.json(await getBooksList());
   } catch (error) {
-    console.error("Error fetching names:", error);
     res.status(500).send("Server error");
   }
 });
@@ -34,8 +36,10 @@ app.get(prefix + "/:knyga", async (req, res) => {
   try {
     const bookName = req.params.knyga;
 
-    if (knygos.includes(bookName)) {
-      res.json(Glob_Chapetes);
+    if (bookName === knygos[0][0]) {
+      res.json(await getBookChapterList(bookName));
+    } else if (bookName === "klausyti-ištraukos") {
+      res.json(await getBookChapterList(bookName));
     } else {
       console.error("Error fetching book:", bookName);
       res.status(404).send("No book of that name found");
@@ -49,12 +53,11 @@ app.get(prefix + "/:knyga", async (req, res) => {
 app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
   try {
     const WhatWasSelected = req.params.chapeter;
-    if (Glob_Chapetes.includes(WhatWasSelected)) {
-      console.log("1:", Date.now() - start, "ms");
-      const id = await findIdByName(WhatWasSelected);
-      console.log("2:", Date.now() - start, "ms");
+    let id = await findIdByName(WhatWasSelected);
+
+    if (id != null) {
       const stream = await streamFile(id);
-      console.log("3:", Date.now() - start, "ms");
+
       res.setHeader("Content-Type", "audio/wav");
       res.setHeader("Transfer-Encoding", "chunked");
       res.setHeader("Cache-Control", "no-cache");
@@ -66,7 +69,7 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
 
       stream.pipe(res);
     } else {
-      console.error("Error fetching chapeter:", Chapeter);
+      console.error("Error fetching chapeter:", req.params.chapeter);
       res.status(404).send("No chapeter of that name found");
     }
   } catch (error) {
