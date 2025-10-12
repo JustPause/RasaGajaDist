@@ -56,19 +56,14 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     if (id != null) {
       const stream = await streamFile(id);
 
-      console.log(stream);
-
       stream.on("error", (err) => {
         console.error("File streaming error:", err);
         res.status(404).send("File not found");
       });
 
-      res.writeHead(206, {
-        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": chunkSize.toString(),
-        "Content-Type": "audio/wav",
-      });
+      res.setHeader("Content-Type", "audio/wav");
+      res.setHeader("Transfer-Encoding", "chunked");
+      res.setHeader("Cache-Control", "no-cache");
 
       stream.pipe(res);
     } else {
