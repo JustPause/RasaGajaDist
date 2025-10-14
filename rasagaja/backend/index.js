@@ -53,24 +53,23 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     const WhatWasSelected = req.params.chapeter;
     let id = await findIdByName(WhatWasSelected);
 
-    if (id != null) {
-      const stream = await streamFile(id);
-
-      stream.on("error", (err) => {
-        console.error("File streaming error:", err);
-        res.status(404).send("File not found");
-      });
-
-      res.setHeader("Content-Type", "audio/wav");
-      res.setHeader("Content-Length", fileSize);
-      res.setHeader("Cache-Control", "no-cache");
-      res.setHeader("Accept-Ranges", "bytes");
-
-      stream.pipe(res);
-    } else {
+    if (id == null) {
       console.error("Error fetching chapeter:", req.params.chapeter);
       res.status(404).send("No chapeter of that name found");
     }
+
+    const stream = await streamFile(id);
+
+    stream.on("error", (err) => {
+      console.error("File streaming error:", err);
+      res.status(500).send("File not found");
+    });
+
+    res.setHeader("Content-Type", "audio/wav");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Accept-Ranges", "bytes");
+
+    stream.pipe(res);
   } catch (error) {
     console.error("Error fetching chapeter:", error);
     res.status(500).send("Server error");
