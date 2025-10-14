@@ -62,8 +62,9 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
       });
 
       res.setHeader("Content-Type", "audio/wav");
+      res.setHeader("Content-Length", fileSize);
       res.setHeader("Cache-Control", "no-cache");
-      res.setHeader("Accept-Ranges", "none");
+      res.setHeader("Accept-Ranges", "bytes");
 
       stream.pipe(res);
     } else {
