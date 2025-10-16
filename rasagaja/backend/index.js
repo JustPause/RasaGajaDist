@@ -58,18 +58,43 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
       res.status(404).send("No chapeter of that name found");
     }
 
+    const { range } = req.headers;
     const stream = await streamFile(id);
+
+    console.log(stream);
+
+    if (!range) {
+      const head = {
+        // "Content-Length": stats.size,
+        "Content-Type": "audio/wav",
+      };
+      res.writeHead(200, head);
+
+      stream.pipe(res);
+      stream.on("error", (err) => res.status(500).send(err));
+      return;
+    }
+
+    const positions = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(positions[0], 10);
+    // const total = stats.size;
+    const total = 100;
+    const end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+    const chunksize = end - start + 1;
+
+    res.writeHead(206, {
+      "Content-Range": `bytes ${start}-${end}/${total}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunksize,
+      "Content-Type": "audio/wav",
+    });
+
+    stream.pipe(res);
 
     stream.on("error", (err) => {
       console.error("File streaming error:", err);
       res.status(500).send("File not found");
     });
-
-    res.setHeader("Content-Type", "audio/wav");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Accept-Ranges", "bytes");
-
-    stream.pipe(res);
   } catch (error) {
     console.error("Error fetching chapeter:", error);
     res.status(500).send("Server error");
