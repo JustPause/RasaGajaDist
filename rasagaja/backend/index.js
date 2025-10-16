@@ -64,22 +64,16 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     console.log(stream);
 
     if (!range) {
-      const head = {
-        // "Content-Length": stats.size,
-        "Content-Type": "audio/wav",
-      };
-      res.writeHead(200, head);
+      res.setHeader("Content-Type", "audio/wav");
 
       stream.pipe(res);
       stream.on("error", (err) => res.status(500).send(err));
       return;
     }
 
-    res.writeHead(206, {
-      "Accept-Ranges": "bytes",
-      "Cache-Control": "no-cache",
-      "Content-Type": "audio/wav",
-    });
+    // res.setHeader("Accept-Ranges", "bytes");
+    // res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Content-Type", "audio/wav");
 
     stream.pipe(res);
 
