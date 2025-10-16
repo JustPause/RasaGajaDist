@@ -76,8 +76,8 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     }
 
     res.writeHead(206, {
-      // "Accept-Ranges": "bytes",
-      // "Cache-Control": "no-cache",
+      "Accept-Ranges": "bytes",
+      "Cache-Control": "no-cache",
       "Content-Type": "audio/wav",
     });
 
