@@ -75,17 +75,9 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
       return;
     }
 
-    const positions = range.replace(/bytes=/, "").split("-");
-    const start = parseInt(positions[0], 10);
-    // const total = stats.size;
-    const total = 100;
-    const end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-    const chunksize = end - start + 1;
-
     res.writeHead(206, {
-      "Content-Range": `bytes ${start}-${end}/${total}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": chunksize,
+      // "Accept-Ranges": "bytes",
+      // "Cache-Control": "no-cache",
       "Content-Type": "audio/wav",
     });
 
