@@ -67,6 +67,7 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
 
     res.setHeader("Content-Type", stream_content_type);
     res.setHeader("Content-Length", stream_content_length);
+    res.setHeader("Accept-Ranges", "bytes");
 
     stream.data.pipe(res);
   } catch (error) {
