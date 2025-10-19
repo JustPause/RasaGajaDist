@@ -113,7 +113,7 @@ async function streamFile(fileId) {
     { responseType: "stream" },
   );
 
-  return res.data;
+  return res;
 }
 
 async function getBooksList() {
