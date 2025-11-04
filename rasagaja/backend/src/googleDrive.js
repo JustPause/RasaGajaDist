@@ -145,7 +145,7 @@ async function getBookChapterList(bookName) {
       }
     });
   } else if (bookName === "klausyti-ištraukos") {
-    listOfTileIds = [1, 5, 11, 20, 32, 64];
+    listOfTileIds = [1, 2, 8, 12, 19, 23, 40, 41, 49, 54, 55, 65, 75, 77, 78, 83, 89, 90, 94, 106];
 
     files.map((file) => {
       const id = file.name.split(".")[0]?.trim();

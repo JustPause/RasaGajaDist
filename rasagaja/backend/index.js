@@ -75,3 +75,5 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+module.exports = app;
