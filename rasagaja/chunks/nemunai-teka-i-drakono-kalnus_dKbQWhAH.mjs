@@ -1,0 +1,60 @@
+import { _ as __astro_tag_component__, e as createVNode, F as Fragment } from './astro/server_D3T3oDyi.mjs';
+import { a as $$Layout } from './Layout_CNJUpmtr.mjs';
+import 'clsx';
+
+const MDXLayout = function ({children}) {
+  const {layout, ...content} = frontmatter;
+  content.file = file;
+  content.url = url;
+  return createVNode($$Layout, {
+    file,
+    url,
+    content,
+    frontmatter: content,
+    headings: getHeadings(),
+    'server:root': true,
+    children
+  });
+};
+const frontmatter = {
+  "layout": "/src/layouts/Layout.astro",
+  "title": "Audio knygos pasibandymas",
+  "cover": "audio-knygos/NEMUNAI TEKA Į DRAKONO KALNUS.png"
+};
+function getHeadings() {
+  return [];
+}
+function _createMdxContent(props) {
+  return createVNode(Fragment, {});
+}
+function MDXContent(props = {}) {
+  return createVNode(MDXLayout, {
+    ...props,
+    children: createVNode(_createMdxContent, {
+      ...props
+    })
+  });
+}
+
+const url = "/audio-knygos/knygos-isigijias/nemunai-teka-i-drakono-kalnus";
+const file = "/home/justinas/Programming/RasoSvetaine/src/pages/audio-knygos/knygos-isigijias/nemunai-teka-i-drakono-kalnus.mdx";
+const Content = (props = {}) => MDXContent({
+  ...props,
+  components: { Fragment: Fragment, ...props.components, },
+});
+Content[Symbol.for('mdx-component')] = true;
+Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
+Content.moduleId = "/home/justinas/Programming/RasoSvetaine/src/pages/audio-knygos/knygos-isigijias/nemunai-teka-i-drakono-kalnus.mdx";
+__astro_tag_component__(Content, 'astro:jsx');
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	Content,
+	default: Content,
+	file,
+	frontmatter,
+	getHeadings,
+	url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+export { _page as _ };

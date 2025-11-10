@@ -9,10 +9,7 @@ const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
-const CREDENTIALS_PATH = path.join(
-  process.cwd(),
-  "env/client_secret_2_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json",
-);
+const CREDENTIALS_PATH = path.join(process.cwd(), "env/client_secret.json");
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -70,7 +67,7 @@ async function authorize() {
 async function googleDrive() {
   const drive = await accessDrive();
 
-  const folderId = "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI";
+  const folderId = "1uBYORqJtSya0EKTArqtypqt6009fQE__";
 
   const res = await drive.files.list({
     q: `'${folderId}' in parents`,
@@ -145,7 +142,10 @@ async function getBookChapterList(bookName) {
       }
     });
   } else if (bookName === "klausyti-ištraukos") {
-    listOfTileIds = [1, 2, 8, 12, 19, 23, 40, 41, 49, 54, 55, 65, 75, 77, 78, 83, 89, 90, 94, 106];
+    listOfTileIds = [
+      1, 2, 8, 12, 19, 23, 40, 41, 49, 54, 55, 65, 75, 77, 78, 83, 89, 90, 94,
+      106,
+    ];
 
     files.map((file) => {
       const id = file.name.split(".")[0]?.trim();
