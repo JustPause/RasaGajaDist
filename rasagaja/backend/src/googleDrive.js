@@ -67,7 +67,7 @@ async function authorize() {
 async function googleDrive() {
   const drive = await accessDrive();
 
-  const folderId = "1uBYORqJtSya0EKTArqtypqt6009fQE__";
+  const folderId = "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj";
 
   const res = await drive.files.list({
     q: `'${folderId}' in parents`,
@@ -143,8 +143,8 @@ async function getBookChapterList(bookName) {
     });
   } else if (bookName === "klausyti-ištraukos") {
     listOfTileIds = [
-      1, 2, 8, 12, 19, 23, 40, 41, 49, 54, 55, 65, 75, 77, 78, 83, 89, 90, 94,
-      106,
+      1, 2, 8, 12, 13, 19, 23, 40, 41, 49, 54, 55, 65, 74, 96, 77, 78, 83, 79,
+      90, 94, 106,
     ];
 
     files.map((file) => {

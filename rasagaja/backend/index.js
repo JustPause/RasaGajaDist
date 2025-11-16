@@ -1,10 +1,10 @@
-const { ideahub } = require("googleapis/build/src/apis/ideahub/index.js");
 const {
   findIdByName,
   getBooksList,
   getBookChapterList,
   streamFile,
 } = require("./src/googleDrive.js");
+const { getJauniTekstai } = require("./src/officeParser.js");
 const express = require("express");
 const app = express();
 const prefix = "/backend";
@@ -27,6 +27,48 @@ app.get(prefix + "/knygos", async (req, res) => {
     res.json(await getBooksList());
   } catch (error) {
     res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/doc", async (req, res) => {
+  res.json(await getJauniTekstai());
+});
+
+app.get(prefix + "/auth/google/callback", async (req, res) => {
+  const { code } = req.query; // Gauname "code" parametrą iš Google
+
+  try {
+    // Išsiųskime užklausą Google, kad gautume access tokeną
+    const response = await axios.post(
+      GOOGLE_TOKEN_URL,
+      querystring.stringify({
+        code, // Authorization code
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
+        grant_type: "authorization_code",
+      }),
+    );
+
+    const { access_token, id_token, refresh_token } = response.data;
+
+    // Pavyzdys: galime naudoti `id_token` vartotojo autentifikavimui
+    const userInfo = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: { Authorization: `Bearer ${access_token}` },
+      },
+    );
+
+    console.log(userInfo.data); // Parodome gautus vartotojo duomenis
+
+    // Gali pasidaryti session arba pasaugoti vartotojo informaciją
+    // Svarbu naudoti `id_token`, kad autentifikuotum vartotoją tavo sistemoje
+
+    res.send("Login successful!");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Authentication failed!");
   }
 });
 
@@ -73,44 +115,6 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
   } catch (error) {
     console.error("Error fetching chapeter:", error);
     res.status(500).send("Server error");
-  }
-});
-
-app.get(prefix + "/auth/google/callback", async (req, res) => {
-  const { code } = req.query; // Gauname "code" parametrą iš Google
-
-  try {
-    // Išsiųskime užklausą Google, kad gautume access tokeną
-    const response = await axios.post(
-      GOOGLE_TOKEN_URL,
-      querystring.stringify({
-        code, // Authorization code
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        redirect_uri: REDIRECT_URI,
-        grant_type: "authorization_code",
-      }),
-    );
-
-    const { access_token, id_token, refresh_token } = response.data;
-
-    // Pavyzdys: galime naudoti `id_token` vartotojo autentifikavimui
-    const userInfo = await axios.get(
-      "https://www.googleapis.com/oauth2/v3/userinfo",
-      {
-        headers: { Authorization: `Bearer ${access_token}` },
-      },
-    );
-
-    console.log(userInfo.data); // Parodome gautus vartotojo duomenis
-
-    // Gali pasidaryti session arba pasaugoti vartotojo informaciją
-    // Svarbu naudoti `id_token`, kad autentifikuotum vartotoją tavo sistemoje
-
-    res.send("Login successful!");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Authentication failed!");
   }
 });
 
