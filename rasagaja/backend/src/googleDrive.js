@@ -11,6 +11,10 @@ const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
 const CREDENTIALS_PATH = path.join(process.cwd(), "env/client_secret.json");
 
+const folder = new Map();
+folder.set("AUDIO KNYGA", "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj");
+folder.set("NOVELĖS IR KT", "11rWwoGWj_Ulg6M0lHxPrJsWgeRFrLPoQ");
+
 /**
  * Reads previously authorized credentials from the save file.
  *
@@ -64,13 +68,11 @@ async function authorize() {
   return client;
 }
 
-async function googleDrive() {
+async function googleDrive(folderKey) {
   const drive = await accessDrive();
 
-  const folderId = "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj";
-
   const res = await drive.files.list({
-    q: `'${folderId}' in parents`,
+    q: `'${folder.get(folderKey)}' in parents`,
     pageSize: 150,
     fields: "nextPageToken, files(id, name)",
   });
@@ -84,18 +86,36 @@ async function googleDrive() {
   return files;
 }
 
-async function listFiles() {
-  const files = await googleDrive();
+async function listFiles(folderKey) {
+  const files = await googleDrive(folderKey);
 
   if (files.length === 0) {
     console.log("No files found.");
     return;
   }
 
-  console.log("Files:");
-  files.map((file) => {
-    console.log(`${file.name} (${file.id})`);
-  });
+  // console.log("Files:");
+  // files.map((file) => {
+  //   console.log(`${file.name} (${file.id})`);
+  // });
+
+  return files;
+}
+
+async function listFilesId(id) {
+  const files = await googleDrive(id);
+
+  if (files.length === 0) {
+    console.log("No files found.");
+    return;
+  }
+
+  // console.log("Files:");
+  // files.map((file) => {
+  //   console.log(`${file.name} (${file.id})`);
+  // });
+
+  return files;
 }
 
 async function accessDrive() {
@@ -122,7 +142,7 @@ async function getBooksList() {
  *
  */
 async function getBookChapterList(bookName) {
-  const files = await googleDrive();
+  const files = await googleDrive("AUDIO KNYGA");
 
   let returnData = new Map();
 
@@ -161,7 +181,7 @@ async function getBookChapterList(bookName) {
 }
 
 async function findIdByName(name) {
-  const files = await googleDrive();
+  const files = await googleDrive("AUDIO KNYGA");
   let returnData = {};
 
   files.forEach((file) => {
@@ -183,6 +203,7 @@ async function findIdByName(name) {
 
 module.exports = {
   listFiles,
+  listFilesId,
   streamFile,
   getBookChapterList,
   getBooksList,
