@@ -9,10 +9,11 @@ const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
-const CREDENTIALS_PATH = path.join(
-  process.cwd(),
-  "env/client_secret_2_227889613965-6kvonvebjvhpjntfvfskgmetfuhci244.apps.googleusercontent.com.json"
-);
+const CREDENTIALS_PATH = path.join(process.cwd(), "env/client_secret.json");
+
+const folder = new Map();
+folder.set("AUDIO KNYGA", "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj");
+folder.set("NOVELĖS IR KT", "11rWwoGWj_Ulg6M0lHxPrJsWgeRFrLPoQ");
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -67,18 +68,14 @@ async function authorize() {
   return client;
 }
 
-// Uper move to class
-
-async function googleDrive() {
-  const drive = await accessDrive()
-  const folderId = "17GGBweAz6ro0de9e6wk0v4v5qs9CpzsI";
+async function googleDrive(folderKey) {
+  const drive = await accessDrive();
 
   const res = await drive.files.list({
-    q: `'${folderId}' in parents`,
-    pageSize: 1000,
+    q: `'${folder.get(folderKey)}' in parents`,
+    pageSize: 150,
     fields: "nextPageToken, files(id, name)",
   });
-
   const files = res.data.files;
 
   if (files.length === 0) {
@@ -89,18 +86,26 @@ async function googleDrive() {
   return files;
 }
 
-async function listFiles() {
-  const files = await googleDrive();
+async function listFiles(folderKey) {
+  const files = await googleDrive(folderKey);
 
   if (files.length === 0) {
     console.log("No files found.");
     return;
   }
 
-  console.log("Files:");
-  files.map((file) => {
-    console.log(`${file.name} (${file.id})`);
-  });
+  return files;
+}
+
+async function listFilesId(id) {
+  const files = await googleDrive(id);
+
+  if (files.length === 0) {
+    console.log("No files found.");
+    return;
+  }
+
+  return files;
 }
 
 async function accessDrive() {
@@ -112,16 +117,25 @@ async function streamFile(fileId) {
 
   const res = await drive.files.get(
     { fileId, alt: "media" },
-    { responseType: "stream" }
+    { responseType: "stream" },
   );
 
   return res.data;
 }
 
-async function getBooks() {
-  const files = await googleDrive();
+async function getBooksList() {
+  return ["nemunai-teka-i-drakono-kalnus", "klausyti-ištrauku"];
+}
 
-  let returnData = [];
+/**
+ * Load and list books List, directorys in the drive. ad it splits the name to id, Chapeter name
+ *
+ */
+async function getBookChapterList(bookName) {
+  const files = await googleDrive("AUDIO KNYGA");
+  const knyguPavadinimai = await getBooksList();
+
+  let returnData = new Map();
 
   files.sort((a, b) => {
     const _a = parseInt(a.name.split(".")[0]);
@@ -129,20 +143,36 @@ async function getBooks() {
     return _a - _b;
   });
 
-  files.map((file) => {
-    const name = file.name.split(".")[1]?.trim();
+  if (bookName === knyguPavadinimai[0]) {
+    files.map((file) => {
+      const id = file.name.split(".")[0]?.trim();
+      const name = file.name.split(".")[1]?.trim();
 
-    if (name) {
-      returnData.push(name);
-    }
-  });
+      if (name) {
+        returnData.set(id, name);
+      }
+    });
+  } else if (bookName === knyguPavadinimai[1]) {
+    listOfTileIds = [
+      1, 2, 8, 12, 13, 19, 23, 40, 41, 49, 54, 55, 65, 74, 96, 77, 78, 83, 79,
+      90, 94, 106,
+    ];
 
-  return returnData;
+    files.map((file) => {
+      const id = file.name.split(".")[0]?.trim();
+      const name = file.name.split(".")[1]?.trim();
+
+      if (name && listOfTileIds.includes(Number(id))) {
+        returnData.set(id, name);
+      }
+    });
+  }
+
+  return Object.fromEntries(returnData);
 }
 
 async function findIdByName(name) {
-  const files = await googleDrive();
-
+  const files = await googleDrive("AUDIO KNYGA");
   let returnData = {};
 
   files.forEach((file) => {
@@ -162,4 +192,12 @@ async function findIdByName(name) {
   return null;
 }
 
-module.exports = { listFiles, streamFile, getBooks, findIdByName };
+module.exports = {
+  listFiles,
+  listFilesId,
+  streamFile,
+  getBookChapterList,
+  getBooksList,
+  findIdByName,
+  googleDrive,
+};
