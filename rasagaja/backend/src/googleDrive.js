@@ -61,6 +61,8 @@ async function authorize() {
   client = await authenticate({
     scopes: SCOPES,
     keyfilePath: CREDENTIALS_PATH,
+    access_type: "offline",
+    prompt: "consent",
   });
   if (client.credentials) {
     await saveCredentials(client);
@@ -120,7 +122,7 @@ async function streamFile(fileId) {
     { responseType: "stream" },
   );
 
-  return res.data;
+  return res;
 }
 
 async function getBooksList() {
