@@ -61,6 +61,8 @@ async function authorize() {
   client = await authenticate({
     scopes: SCOPES,
     keyfilePath: CREDENTIALS_PATH,
+    access_type: "offline",
+    prompt: "consent",
   });
   if (client.credentials) {
     await saveCredentials(client);
@@ -94,11 +96,14 @@ async function listFiles(folderKey) {
     return;
   }
 
+<<<<<<< HEAD
   // console.log("Files:");
   // files.map((file) => {
   //   console.log(`${file.name} (${file.id})`);
   // });
 
+=======
+>>>>>>> main
   return files;
 }
 
@@ -110,11 +115,14 @@ async function listFilesId(id) {
     return;
   }
 
+<<<<<<< HEAD
   // console.log("Files:");
   // files.map((file) => {
   //   console.log(`${file.name} (${file.id})`);
   // });
 
+=======
+>>>>>>> main
   return files;
 }
 
@@ -134,7 +142,11 @@ async function streamFile(fileId) {
 }
 
 async function getBooksList() {
+<<<<<<< HEAD
   return ["nemunai-teka-i-drakono-kalnus", "klausyti-ištraukos"];
+=======
+  return ["nemunai-teka-i-drakono-kalnus", "klausyti-ištrauku"];
+>>>>>>> main
 }
 
 /**
@@ -143,6 +155,10 @@ async function getBooksList() {
  */
 async function getBookChapterList(bookName) {
   const files = await googleDrive("AUDIO KNYGA");
+<<<<<<< HEAD
+=======
+  const knyguPavadinimai = await getBooksList();
+>>>>>>> main
 
   let returnData = new Map();
 
@@ -152,7 +168,11 @@ async function getBookChapterList(bookName) {
     return _a - _b;
   });
 
+<<<<<<< HEAD
   if (bookName === "nemunai-teka-i-drakono-kalnus") {
+=======
+  if (bookName === knyguPavadinimai[0]) {
+>>>>>>> main
     files.map((file) => {
       const id = file.name.split(".")[0]?.trim();
       const name = file.name.split(".")[1]?.trim();
@@ -161,7 +181,11 @@ async function getBookChapterList(bookName) {
         returnData.set(id, name);
       }
     });
+<<<<<<< HEAD
   } else if (bookName === "klausyti-ištraukos") {
+=======
+  } else if (bookName === knyguPavadinimai[1]) {
+>>>>>>> main
     listOfTileIds = [
       1, 2, 8, 12, 13, 19, 23, 40, 41, 49, 54, 55, 65, 74, 96, 77, 78, 83, 79,
       90, 94, 106,
@@ -208,4 +232,8 @@ module.exports = {
   getBookChapterList,
   getBooksList,
   findIdByName,
+<<<<<<< HEAD
+=======
+  googleDrive,
+>>>>>>> main
 };

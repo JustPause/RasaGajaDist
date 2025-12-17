@@ -3,14 +3,22 @@ const {
   getBooksList,
   getBookChapterList,
   streamFile,
+<<<<<<< HEAD
+=======
+  googleDrive,
+  listFiles,
+>>>>>>> main
 } = require("./src/googleDrive.js");
 const { getJauniTekstai } = require("./src/officeParser.js");
 const express = require("express");
 const app = express();
 const prefix = "/backend";
 
+<<<<<<< HEAD
 let knygos = ["nemunai-teka-i-drakono-kalnus", "klausyti-ištraukos"];
 
+=======
+>>>>>>> main
 app.listen(8002, async () => {
   console.log("Server listening");
 });
@@ -30,6 +38,7 @@ app.get(prefix + "/knygos", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 app.get(prefix + "/doc", async (req, res) => {
   res.json(await getJauniTekstai());
 });
@@ -75,6 +84,84 @@ app.get(prefix + "/auth/google/callback", async (req, res) => {
 app.get(prefix + "/:knyga", async (req, res) => {
   try {
     const bookName = req.params.knyga;
+=======
+app.get(prefix + "/doc/noveles", async (req, res) => {
+  try {
+    const files = await googleDrive("NOVELĖS IR KT");
+    const returning = [];
+
+    // for (let i = 0; i < files.length; i++) {
+    //   const [folderID, folderNameUpper] = files[i]["name"].split(". ");
+    //   folderName = folderNameUpper.toLowerCase();
+    //   returning[folderID - 1] = { folderName };
+    // }
+
+    // res.json({ returning });
+
+    res.status(200).send("Good");
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/doc/noveles/:novele", async (req, res) => {
+  try {
+    const files = await googleDrive("NOVELĖS IR KT");
+    const novele = String(req.params.novele);
+    let noMoreWork = true;
+
+    for (let i = 0; i < files.length; i++) {
+      const [folderID, folderNameUpper] = files[i]["name"].split(". ");
+      const ID = files[i]["id"];
+      let folderName = folderNameUpper.toLowerCase();
+
+      if (folderName.localeCompare(novele) == 0) {
+        // console.log(await listFiles(ID));
+
+        res.json(ID);
+        noMoreWork = false;
+      }
+    }
+    if (noMoreWork) {
+      res.status(404).send("No doc by that name");
+    }
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/doc/straipsniai", async (req, res) => {
+  try {
+    res.json({});
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/doc/scenarijai", async (req, res) => {
+  try {
+    res.json({});
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/doc/knygos", async (req, res) => {
+  try {
+    res.json({});
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/auth/google/callback", async (req, res) => {});
+
+app.get(prefix + "/:knyga", async (req, res) => {
+  try {
+    const bookName = req.params.knyga;
+    const knygos = await getBooksList();
+    console.log(knygos[0]);
+>>>>>>> main
 
     if (bookName === knygos[0]) {
       res.json(await getBookChapterList(bookName));
@@ -103,6 +190,10 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     }
 
     const stream = await streamFile(id);
+<<<<<<< HEAD
+=======
+    console.log(stream);
+>>>>>>> main
 
     const stream_content_type = stream.headers["content-type"];
     const stream_content_length = stream.headers["content-length"];

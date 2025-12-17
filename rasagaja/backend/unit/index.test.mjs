@@ -9,6 +9,10 @@ test("GET /knygos returns a list of books", async () => {
   const response = await request(app).get("/knygos").expect(200);
   assert.deepStrictEqual(response.body, [
     "nemunai-teka-i-drakono-kalnus",
+<<<<<<< HEAD
     "klausyti-ištraukos",
+=======
+    "klausyti-ištrauku",
+>>>>>>> main
   ]);
 });
