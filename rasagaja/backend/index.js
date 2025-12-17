@@ -105,7 +105,7 @@ app.get(prefix + "/:knyga", async (req, res) => {
   try {
     const bookName = req.params.knyga;
     const knygos = await getBooksList();
-    console.log(knygos[0]);
+    console.log(knygos);
 
     if (bookName === knygos[0]) {
       res.json(await getBookChapterList(bookName));
