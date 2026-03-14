@@ -4,8 +4,8 @@ const {
   getBookChapterList,
   streamFile,
   googleDrive,
+  listFiles,
 } = require("./src/googleDrive.js");
-
 const { getJauniTekstai } = require("./src/officeParser.js");
 const express = require("express");
 const app = express();
@@ -33,53 +33,45 @@ app.get(prefix + "/knygos", async (req, res) => {
 app.get(prefix + "/doc/noveles", async (req, res) => {
   try {
     const files = await googleDrive("NOVELĖS IR KT");
-    let returning = [];
+    const returning = [];
 
-    for (let i = 0; i < files.length; i++) {
-      const name = files[i].name;
-      const match = name.match(/^\d+/);
+    // for (let i = 0; i < files.length; i++) {
+    //   const [folderID, folderNameUpper] = files[i]["name"].split(". ");
+    //   folderName = folderNameUpper.toLowerCase();
+    //   returning[folderID - 1] = { folderName };
+    // }
 
-      if (!match) continue;
+    // res.json({ returning });
 
-      const index = Number(match[0]) - 1;
-      const cleanName = name.replace(/^\d+\.\s*/, "");
-
-      returning[index] = cleanName;
-    }
-
-    res.json(returning);
+    res.status(200).send("Good");
   } catch (error) {
-    res.status(500).send("Server error " + error);
+    res.status(500).send("Server error");
   }
 });
 
 app.get(prefix + "/doc/noveles/:novele", async (req, res) => {
   try {
-    const { parseOfficeAsync } = require("officeparser");
-    const novele = req.params.novele;
+    const files = await googleDrive("NOVELĖS IR KT");
+    const novele = String(req.params.novele);
+    let noMoreWork = true;
 
-    const files = await googleDrive(novele);
+    for (let i = 0; i < files.length; i++) {
+      const [folderID, folderNameUpper] = files[i]["name"].split(". ");
+      const ID = files[i]["id"];
+      let folderName = folderNameUpper.toLowerCase();
 
-    const docFiles = files.filter((file) => {
-      const name = file.name.toLowerCase();
-      return name.endsWith(".docx");
-    });
+      if (folderName.localeCompare(novele) == 0) {
+        // console.log(await listFiles(ID));
 
-    const stream = await streamFile(docFiles[0].id);
-    const chunks = [];
-
-    for await (const chunk of stream.data) {
-      chunks.push(chunk);
+        res.json(ID);
+        noMoreWork = false;
+      }
     }
-
-    const fileBuffer = Buffer.concat(chunks);
-    const text = await parseOfficeAsync(fileBuffer);
-    const lines = text.split("\n");
-    const body = lines.slice(1).map((line) => line.trim());
-
-    res.json({ Title: lines[0], body: body });
+    if (noMoreWork) {
+      res.status(404).send("No doc by that name");
+    }
   } catch (error) {
-    res.status(500).send("Server error" + error);
+    res.status(500).send("Server error");
   }
 });
 
