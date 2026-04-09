@@ -1,15 +1,15 @@
-import {
+import officeparser from "officeparser";
+import express from "express";
+
+const {
   findIdByName,
   getBooksList,
   getBookChapterList,
   streamFile,
   googleDrive,
-} from "./src/googleDrive.js";
+} = await import("./src/googleDrive.js");
 
-import { getDocText } from "./src/officeParser.js";
-
-import officeparser from "officeparser";
-import express from "express";
+const { getDocText } = await import("./src/officeParser.js");
 
 const app = express();
 const prefix = "/backend";
