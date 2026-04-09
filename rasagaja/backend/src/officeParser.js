@@ -1,5 +1,5 @@
 import officeparser from "officeparser";
-import { streamFile } from "./googleDrive.mjs";
+import { streamFile } from "./googleDrive.js";
 export async function getDocText(docFilesId) {
   const stream = await streamFile(docFilesId);
   const chunks = [];

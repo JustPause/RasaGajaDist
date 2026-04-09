@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "0.1.0",
-  "type": "commonjs",
-  "main": "server.mjs",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "start": "NODE_EXTRA_CA_CERTS=combined-ca.crt NODE_ENV=production node server.mjs",
-    "devstart": "nodemon server.mjs"
+    "start": "NODE_EXTRA_CA_CERTS=combined-ca.crt NODE_ENV=production node server.js",
+    "devstart": "nodemon server.js"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",

@@ -2,7 +2,7 @@ import request from "supertest";
 import test from "node:test";
 import { strict as assert } from "node:assert";
 
-import app from "../index.mjs";
+import app from "../index.js";
 
 test("GET /backend/ returns greeting", async () => {
   const expected =

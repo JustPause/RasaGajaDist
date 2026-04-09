@@ -4,9 +4,9 @@ import {
   getBookChapterList,
   streamFile,
   googleDrive,
-} from "./src/googleDrive.mjs";
+} from "./src/googleDrive.js";
 
-import { getDocText } from "./src/officeParser.mjs";
+import { getDocText } from "./src/officeParser.js";
 
 import officeparser from "officeparser";
 import express from "express";
