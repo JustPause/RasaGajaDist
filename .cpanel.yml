@@ -24,6 +24,5 @@ deployment:
 
     - rm -rf $DEPLOYPATH_public_html/backend/src/
     - rm -rf $DEPLOYPATH_public_html/backend/unit/
-    - rm -f $DEPLOYPATH_public_html/backend/.htaccess
     - rm -f $DEPLOYPATH_public_html/backend/index.mjs
     - rm -f $DEPLOYPATH_public_html/backend/server.mjs
