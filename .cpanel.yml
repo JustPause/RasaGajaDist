@@ -1,30 +1,29 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH_public_html=/var/home/rasagaja/public_html/
     - export DEPLOYPATH_backend=/var/home/rasagaja/backend/
 
     - rm -rf $DEPLOYPATH_backend/src/
-    - rm -rf $DEPLOYPATH_backend/tmp/
-    - rm -f $DEPLOYPATH_backend/logs
+    - rm -rf $DEPLOYPATH_backend/unit/
     - rm -f $DEPLOYPATH_backend/package.json
     - rm -f $DEPLOYPATH_backend/package-lock.json
     - rm -f $DEPLOYPATH_backend/.htaccess
     - rm -f $DEPLOYPATH_backend/ReadMe.md
     - rm -f $DEPLOYPATH_backend/TODO.md
-    - rm -f $DEPLOYPATH_backend/index.js
+    - rm -f $DEPLOYPATH_backend/index.mjs
+    - rm -f $DEPLOYPATH_backend/server.mjs
 
     - /bin/cp -R rasagaja/backend/* $DEPLOYPATH_backend
     - /bin/cp rasagaja/backend/.htaccess $DEPLOYPATH_backend
+
+    - export DEPLOYPATH_public_html=/var/home/rasagaja/public_html/
 
     - rm -rf $DEPLOYPATH_public_html/*
     - /bin/cp -R rasagaja/* $DEPLOYPATH_public_html
     - /bin/cp -R rasagaja/.htaccess $DEPLOYPATH_public_html/.htaccess
 
     - rm -rf $DEPLOYPATH_public_html/backend/src/
-    - rm -f $DEPLOYPATH_public_html/backend/.gitignore
-    - rm -f $DEPLOYPATH_public_html/backend/ReadMe.md
-    - rm -f $DEPLOYPATH_public_html/backend/TODO.md
-    - rm -f $DEPLOYPATH_public_html/backend/index.js
-    - rm -f $DEPLOYPATH_public_html/backend/package-lock.json
-    - rm -f $DEPLOYPATH_public_html/backend/package.json
+    - rm -rf $DEPLOYPATH_public_html/backend/unit/
+    - rm -f $DEPLOYPATH_public_html/backend/.htaccess
+    - rm -f $DEPLOYPATH_public_html/backend/index.mjs
+    - rm -f $DEPLOYPATH_public_html/backend/server.mjs
