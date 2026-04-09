@@ -1,4 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH_base=/var/home/rasagaja/
+    - export DEPLOYPATH_base=/var/home/rasagaja/backend
+    - rm -r DEPLOYPATH_base
