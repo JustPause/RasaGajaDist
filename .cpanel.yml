@@ -14,4 +14,4 @@ deployment:
 
     # Copy certificat
 
-    - cp ca-bundle.crt ~/backend/cacert.crt
+    - cp /etc/pki/tls/certs/ca-bundle.crt ~/backend/cacert.crt

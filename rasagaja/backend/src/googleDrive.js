@@ -9,6 +9,8 @@ const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 
+console.log("NODE_EXTRA_CA_CERTS =", process.env.NODE_EXTRA_CA_CERTS);
+
 const TOKEN_PATH = process.env.TOKEN_PATH;
 const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH;
 if (!TOKEN_PATH || !CREDENTIALS_PATH) {
