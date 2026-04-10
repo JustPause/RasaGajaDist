@@ -15,5 +15,3 @@ deployment:
     # Copy certificat
 
     - cp /etc/pki/tls/certs/ca-bundle.crt ~/backend/cacert.crt
-
-    - touch ~/backend/tmp/restart.txt
