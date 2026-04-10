@@ -1,4 +1,5 @@
-const fs = require("node:fs").promises;
+// const fs = require("node:fs").promises;
+const fs = require("node:fs");
 const path = require("path");
 const process = require("process");
 
