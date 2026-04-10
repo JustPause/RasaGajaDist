@@ -1,4 +1,3 @@
-// const fs = require("node:fs").promises;
 const fs = require("fs").promises;
 const path = require("path");
 const process = require("process");
@@ -9,14 +8,12 @@ const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
+const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
+const CREDENTIALS_PATH = path.join(process.cwd(), "env/client_secret.json");
 
-const TOKEN_PATH = process.env.TOKEN_PATH;
-const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH;
-if (!TOKEN_PATH || !CREDENTIALS_PATH) {
-  throw new Error("Missing env var TOKEN_PATH");
-}
-
-let folderMap = listDirAndId();
+const folder = new Map();
+folder.set("AUDIO KNYGA", "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj");
+folder.set("NOVELĖS IR KT", "11rWwoGWj_Ulg6M0lHxPrJsWgeRFrLPoQ");
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -76,79 +73,26 @@ async function authorize() {
 async function googleDrive(folderKey) {
   const drive = await accessDrive();
 
-  const folderMapAwaited = await folderMap;
-
   const res = await drive.files.list({
-    q: `'${folderMapAwaited.get(folderKey)}' in parents`,
+    q: `'${folder.get(folderKey)}' in parents`,
     pageSize: 150,
     fields: "nextPageToken, files(id, name)",
   });
   const files = res.data.files;
 
   if (files.length === 0) {
-    console.error("No files found.");
+    console.log("No files found.");
     return;
   }
 
   return files;
 }
 
-async function listDirAndId() {
-  const TEKSTAI_ID = "1-I54VhYZNN5WTHQO96Sz9vRtb6AC8JMs";
-  let returnData = [];
-
-  const drive = await accessDrive();
-
-  const res = await drive.files.list({
-    q: `'${TEKSTAI_ID}' in parents`,
-    pageSize: 150,
-    fields: "nextPageToken, files(id, name)",
-  });
-
-  const files = res.data.files;
-
-  for (let i = 0; i < files.length; i++) {
-    returnData.push(files[i]);
-
-    const ID = files[i].id;
-    const resi = await drive.files.list({
-      q: `'${ID}' in parents`,
-      pageSize: 150,
-      fields: "nextPageToken, files(id, name)",
-    });
-    const innerFiles = resi.data.files;
-
-    for (let j = 0; j < innerFiles.length; j++) {
-      returnData.push(innerFiles[j]);
-    }
-  }
-
-  const returnDataFormated = reformatingFromDicsinayName(returnData);
-
-  let map = new Map();
-
-  map.set("AUDIO KNYGA", "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj");
-
-  for (let i = 0; i < returnDataFormated.length; i++) {
-    map.set(returnDataFormated[i].name, returnDataFormated[i].id);
-  }
-
-  return map;
-}
-
-function reformatingFromDicsinayName(Data) {
-  for (let i = 0; i < Data.length; i++) {
-    Data[i] = { id: Data[i].id, name: Data[i].name.replace(/^\d+\.\s*/, "") };
-  }
-
-  return Data;
-}
-
 async function listFiles(folderKey) {
   const files = await googleDrive(folderKey);
 
   if (files.length === 0) {
-    console.error("No files found.");
+    console.log("No files found.");
     return;
   }
 
@@ -159,7 +103,7 @@ async function listFilesId(id) {
   const files = await googleDrive(id);
 
   if (files.length === 0) {
-    console.error("No files found.");
+    console.log("No files found.");
     return;
   }
 
@@ -211,7 +155,7 @@ async function getBookChapterList(bookName) {
       }
     });
   } else if (bookName === knyguPavadinimai[1]) {
-    const listOfTileIds = [
+    listOfTileIds = [
       1, 2, 8, 12, 13, 19, 23, 40, 41, 49, 54, 55, 65, 74, 96, 77, 78, 83, 79,
       90, 94, 106,
     ];
@@ -251,9 +195,11 @@ async function findIdByName(name) {
 }
 
 module.exports = {
-  findIdByName,
-  getBooksList,
-  getBookChapterList,
+  listFiles,
+  listFilesId,
   streamFile,
+  getBookChapterList,
+  getBooksList,
+  findIdByName,
   googleDrive,
 };
