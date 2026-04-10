@@ -8,8 +8,12 @@ const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
-const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
-const CREDENTIALS_PATH = path.join(process.cwd(), "env/client_secret.json");
+
+const TOKEN_PATH = process.env.TOKEN_PATH;
+const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH;
+if (!TOKEN_PATH || !CREDENTIALS_PATH) {
+  throw new Error("Missing env var TOKEN_PATH");
+}
 
 let folderMap = listDirAndId();
 
