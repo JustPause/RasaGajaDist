@@ -11,3 +11,7 @@ deployment:
     - cp -r rasagaja/ ~/public_html
     - cp -r rasagaja/backend ~/backend
     - find ~/public_html/backend -mindepth 1 -maxdepth 1 ! -name '.htaccess' -exec rm -rf {} +
+
+    # Copy certificat
+
+    - cp ca-bundle.crt ~/backend/cacert.crt
