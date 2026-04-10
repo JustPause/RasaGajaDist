@@ -1,11 +1,11 @@
-import { promises as fs } from "node:fs";
-import path from "path";
-import process from "process";
+const fs = require("node:fs").promises;
+const path = require("path");
+const process = require("process");
 
 process.env.NODE_EXTRA_CA_CERTS = "/var/home/rasagaja/backend/cacert.crt";
 
-import { authenticate } from "@google-cloud/local-auth";
-import { google } from "googleapis";
+const { authenticate } = require("@google-cloud/local-auth");
+const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 const TOKEN_PATH = path.join(process.cwd(), "env/token.json");
@@ -51,24 +51,24 @@ async function saveCredentials(client) {
  * Load or request or authorization to call APIs.
  *
  */
-async function authorize() {
-  let client = await loadSavedCredentialsIfExist();
+function authorize() {
+  let client = loadSavedCredentialsIfExist();
   if (client) {
     return client;
   }
-  client = await authenticate({
+  client = authenticate({
     scopes: SCOPES,
     keyfilePath: CREDENTIALS_PATH,
     access_type: "offline",
     prompt: "consent",
   });
   if (client.credentials) {
-    await saveCredentials(client);
+    saveCredentials(client);
   }
   return client;
 }
 
-export async function googleDrive(folderKey) {
+async function googleDrive(folderKey) {
   const drive = await accessDrive();
 
   const folderMapAwaited = await folderMap;
@@ -88,7 +88,7 @@ export async function googleDrive(folderKey) {
   return files;
 }
 
-export async function listDirAndId() {
+async function listDirAndId() {
   const TEKSTAI_ID = "1-I54VhYZNN5WTHQO96Sz9vRtb6AC8JMs";
   let returnData = [];
 
@@ -139,7 +139,7 @@ function reformatingFromDicsinayName(Data) {
   return Data;
 }
 
-export async function listFiles(folderKey) {
+async function listFiles(folderKey) {
   const files = await googleDrive(folderKey);
 
   if (files.length === 0) {
@@ -150,7 +150,7 @@ export async function listFiles(folderKey) {
   return files;
 }
 
-export async function listFilesId(id) {
+async function listFilesId(id) {
   const files = await googleDrive(id);
 
   if (files.length === 0) {
@@ -165,7 +165,7 @@ async function accessDrive() {
   return google.drive({ version: "v3", auth: await authorize() });
 }
 
-export async function streamFile(fileId) {
+async function streamFile(fileId) {
   const drive = await accessDrive();
 
   const res = await drive.files.get(
@@ -176,7 +176,7 @@ export async function streamFile(fileId) {
   return res;
 }
 
-export async function getBooksList() {
+async function getBooksList() {
   return ["nemunai-teka-i-drakono-kalnus", "klausyti-ištrauku"];
 }
 
@@ -184,7 +184,7 @@ export async function getBooksList() {
  * Load and list books List, directorys in the drive. ad it splits the name to id, Chapeter name
  *
  */
-export async function getBookChapterList(bookName) {
+async function getBookChapterList(bookName) {
   const files = await googleDrive("AUDIO KNYGA");
   const knyguPavadinimai = await getBooksList();
 
@@ -224,7 +224,7 @@ export async function getBookChapterList(bookName) {
   return Object.fromEntries(returnData);
 }
 
-export async function findIdByName(name) {
+async function findIdByName(name) {
   const files = await googleDrive("AUDIO KNYGA");
   let returnData = {};
 
@@ -244,3 +244,11 @@ export async function findIdByName(name) {
 
   return null;
 }
+
+module.exports = {
+  findIdByName,
+  getBooksList,
+  getBookChapterList,
+  streamFile,
+  googleDrive,
+};

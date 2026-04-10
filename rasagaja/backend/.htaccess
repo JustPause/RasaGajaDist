@@ -3,8 +3,8 @@ PassengerAppRoot "/var/home/rasagaja/backend"
 PassengerBaseURI "/backend"
 PassengerNodejs "/var/home/rasagaja/nodevenv/backend/18/bin/node"
 PassengerAppType node
-PassengerStartupFile server.mjs
-PassengerAppLogFile "/var/home/rasagaja/backend/logs"
+PassengerStartupFile server.js
+PassengerAppLogFile "/var/home/rasagaja/backend/logs/log.log"
 # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
 # DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
 <IfModule Litespeed>

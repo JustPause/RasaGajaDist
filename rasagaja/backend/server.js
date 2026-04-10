@@ -1,4 +1,4 @@
-// import app from "./index.js";
+const { app } = require("./index.js");
 
 app.listen(8002, () => {
   console.info("Server listening on 8002");

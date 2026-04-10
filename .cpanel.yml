@@ -1,4 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH_base=/var/home/rasagaja/backend
+    # first make space to move the itmes
+
+    - rm -r ~/public_html
+    - rm -r ~/backend
