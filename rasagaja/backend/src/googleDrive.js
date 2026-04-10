@@ -1,3 +1,4 @@
+const os = require("os");
 // const fs = require("node:fs").promises;
 const fs = require("fs").promises;
 const path = require("path");
@@ -10,8 +11,12 @@ const { google } = require("googleapis");
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.readonly"];
 
-const TOKEN_PATH = process.env.TOKEN_PATH;
-const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH;
+const expandHome = (p) =>
+  p && p.startsWith("~/") ? os.homedir() + p.slice(1) : p;
+
+const TOKEN_PATH = expandHome(process.env.TOKEN_PATH);
+const CREDENTIALS_PATH = expandHome(process.env.CREDENTIALS_PATH);
+
 if (!TOKEN_PATH || !CREDENTIALS_PATH) {
   throw new Error("Missing env var TOKEN_PATH");
 }

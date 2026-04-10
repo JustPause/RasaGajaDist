@@ -4,7 +4,7 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "start": "TOKEN_PATH=$HOME/.secret/token.json CREDENTIALS_PATH=$HOME/.secret/client_secret.json node server.js",
+    "start": "TOKEN_PATH=~/.secret/token.json CREDENTIALS_PATH=~/.secret/client_secret.json node server.js",
     "devstart": "TOKEN_PATH=\"$HOME/.secret/token.json\" CREDENTIALS_PATH=\"$HOME/.secret/client_secret.json\" nodemon server.js"
   },
   "dependencies": {
