@@ -4,6 +4,8 @@ const path = require("path");
 const process = require("process");
 
 process.env.NODE_EXTRA_CA_CERTS = "/var/home/rasagaja/backend/cacert.crt";
+process.env.TOKEN_PATH="/var/home/rasagaja/.secret/client_secret.json";
+process.env.CREDENTIALS_PATH="/var/home/rasagaja/.secret/token.json";
 
 const { authenticate } = require("@google-cloud/local-auth");
 const { google } = require("googleapis");
@@ -63,6 +65,7 @@ async function authorize() {
   if (client) {
     return client;
   }
+
   client = authenticate({
     scopes: SCOPES,
     keyfilePath: CREDENTIALS_PATH,
