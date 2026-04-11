@@ -17,6 +17,8 @@ const expandHome = (p) =>
 const TOKEN_PATH = expandHome(process.env.TOKEN_PATH);
 const CREDENTIALS_PATH = expandHome(process.env.CREDENTIALS_PATH);
 
+
+
 if (!TOKEN_PATH || !CREDENTIALS_PATH) {
   throw new Error("Missing env var TOKEN_PATH");
 }
