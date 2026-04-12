@@ -16,8 +16,6 @@ async function getDocText(docFilesId) {
   let body = (await mammoth.extractRawText({ buffer: fileBuffer })).value;
 
   body = body.split("\n");
-  body = body.map((line) => line.trim());
-  body = body.filter((line) => line !== "");
 
   return body;
 }
