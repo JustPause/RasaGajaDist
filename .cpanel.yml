@@ -15,3 +15,7 @@ deployment:
     # Copy certificat
 
     - cp /etc/ssl/certs/ca-bundle.crt ~/backend/cacert.crt
+
+    # Restart node
+
+    - touch ~/backend/tmp/restart.txt
