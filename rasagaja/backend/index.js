@@ -8,7 +8,7 @@ const {
   googleDrive,
 } = require("./src/googleDrive");
 
-const { getDocText } = require("./src/officeParser.js");
+const { getDocText } = require("./src/mammoth.js");
 
 const app = express();
 const prefix = "/backend";
@@ -60,7 +60,8 @@ app.get(prefix + "/doc/noveles/:novele", async (req, res) => {
 
     const text = await getDocText(docFiles[0].id);
 
-    const lines = text.split("\n");
+    // const lines = text.split("\n");
+    const lines = text;
 
     if (lines.length < 2) {
       return res

@@ -1,5 +1,7 @@
-const officeparser = require("officeparser");
+// const officeparser = require("officeparser");
+const mammoth = require("mammoth");
 const { streamFile } = require("./googleDrive");
+
 async function getDocText(docFilesId) {
   const stream = await streamFile(docFilesId);
   const chunks = [];
@@ -11,7 +13,13 @@ async function getDocText(docFilesId) {
   const fileBuffer = Buffer.concat(chunks);
   // To Do adding suport for text to sepret funcion class
 
-  return (await officeparser.parseOffice(fileBuffer)).toText();
+  let body = (await mammoth.extractRawText({ buffer: fileBuffer })).value;
+
+  body = body.split("\n");
+  body = body.map((line) => line.trim());
+  body = body.filter((line) => line !== "");
+
+  return body;
 }
 
 module.exports = { getDocText };
