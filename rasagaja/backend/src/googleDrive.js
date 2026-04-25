@@ -17,13 +17,11 @@ const expandHome = (p) =>
 const TOKEN_PATH = expandHome(process.env.TOKEN_PATH);
 const CREDENTIALS_PATH = expandHome(process.env.CREDENTIALS_PATH);
 
-
-
 if (!TOKEN_PATH || !CREDENTIALS_PATH) {
   throw new Error("Missing env var TOKEN_PATH");
 }
 
-let folderMap = listDirAndId();
+let folderMap = listDirAndDirId();
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -82,8 +80,13 @@ async function authorize() {
 
 async function googleDrive(folderKey) {
   const drive = await accessDrive();
-
   const folderMapAwaited = await folderMap;
+  const key = folderMapAwaited.get(folderKey);
+
+  if (key === undefined) {
+    console.error("Key is undefined.");
+    return;
+  }
 
   const res = await drive.files.list({
     q: `'${folderMapAwaited.get(folderKey)}' in parents`,
@@ -100,46 +103,44 @@ async function googleDrive(folderKey) {
   return files;
 }
 
-async function listDirAndId() {
+async function listDirAndDirId() {
   const TEKSTAI_ID = "1-I54VhYZNN5WTHQO96Sz9vRtb6AC8JMs";
+  const drive = await accessDrive();
   let returnData = [];
 
-  const drive = await accessDrive();
-
-  const res = await drive.files.list({
-    q: `'${TEKSTAI_ID}' in parents`,
-    pageSize: 150,
-    fields: "nextPageToken, files(id, name)",
-  });
-
-  const files = res.data.files;
-
-  for (let i = 0; i < files.length; i++) {
-    returnData.push(files[i]);
-
-    const ID = files[i].id;
-    const resi = await drive.files.list({
-      q: `'${ID}' in parents`,
+  async function traverseFolder(parentId) {
+    const res = await drive.files.list({
+      q: `'${parentId}' in parents`,
       pageSize: 150,
-      fields: "nextPageToken, files(id, name)",
+      fields: "nextPageToken, files(id, name, mimeType)",
     });
-    const innerFiles = resi.data.files;
 
-    for (let j = 0; j < innerFiles.length; j++) {
-      returnData.push(innerFiles[j]);
+    const files = res.data.files;
+
+    for (const file of files) {
+      if (file.mimeType === "application/vnd.google-apps.folder") {
+        returnData.push({
+          id: file.id,
+          name: file.name,
+        });
+
+        await traverseFolder(file.id);
+      }
     }
   }
+
+  await traverseFolder(TEKSTAI_ID);
 
   const returnDataFormated = reformatingFromDicsinayName(returnData);
 
   let map = new Map();
 
   map.set("AUDIO KNYGA", "1Rw4Lnn_f3y1A3qy5nipvZ6K4d2qfA0tj");
+  map.set("TEKSTAI", "1-I54VhYZNN5WTHQO96Sz9vRtb6AC8JMs");
 
   for (let i = 0; i < returnDataFormated.length; i++) {
     map.set(returnDataFormated[i].name, returnDataFormated[i].id);
   }
-
   return map;
 }
 

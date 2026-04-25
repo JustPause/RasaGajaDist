@@ -1,4 +1,3 @@
-// const officeparser = require("officeparser");
 const mammoth = require("mammoth");
 const { streamFile } = require("./googleDrive");
 
@@ -11,13 +10,37 @@ async function getDocText(docFilesId) {
   }
 
   const fileBuffer = Buffer.concat(chunks);
-  // To Do adding suport for text to sepret funcion class
 
   let body = (await mammoth.extractRawText({ buffer: fileBuffer })).value;
 
   body = body.split("\n");
+  body = body.map((line) => line.trim());
+  body = body.filter((line) => line !== "");
 
   return body;
 }
 
-module.exports = { getDocText };
+async function handelingDocument(files) {
+  const docFiles = files.filter((file) => {
+    const name = file.name.toLowerCase();
+    return name.endsWith(".docx");
+  });
+
+  if (docFiles.length === 0) {
+    return [];
+  }
+
+  const text = await getDocText(docFiles[0].id);
+
+  const lines = text;
+
+  if (lines.length < 2) {
+    return res
+      .status(404)
+      .send("Docx does not contain enough text (missing title/body)");
+  }
+
+  return [lines[0], (body = lines.slice(1).map((line) => line.trim()))];
+}
+
+module.exports = { getDocText, handelingDocument };
