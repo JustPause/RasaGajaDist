@@ -59,61 +59,6 @@ app.get(prefix + "/", async (req, res) => {
 
 app.use(prefix, rejectIfStarting);
 
-app.get(prefix + "/knygos", async (req, res) => {
-  try {
-    res.json(await getBooksList());
-  } catch (error) {
-    res.status(500).send("Server error");
-  }
-});
-
-app.get(prefix + "/:knyga", async (req, res) => {
-  try {
-    const bookName = req.params.knyga;
-    const knygos = await getBooksList();
-
-    if (bookName === knygos[0]) {
-      res.json(await getBookChapterList(bookName));
-    } else if (bookName === knygos[1]) {
-      res.json(await getBookChapterList(bookName));
-    } else {
-      console.error("Error fetching book:", bookName);
-      res.status(404).send("No book of that name found");
-    }
-  } catch (error) {
-    console.error("Error fetching book:", error);
-    res.status(500).send("Server error");
-  }
-});
-
-app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
-  try {
-    const chapeter = req.params.chapeter;
-    const range = req.headers.range;
-
-    let id = await findIdByName(chapeter);
-
-    if (id == null) {
-      console.error("Error fetching chapeter:", req.params.chapeter);
-      return res.status(404).send("No chapeter of that name found");
-    }
-
-    const stream = await streamFile(id);
-
-    const stream_content_type = stream.headers["content-type"];
-    const stream_content_length = stream.headers["content-length"];
-
-    res.setHeader("Content-Type", stream_content_type);
-    res.setHeader("Content-Length", stream_content_length);
-    res.setHeader("Accept-Ranges", "bytes");
-
-    stream.data.pipe(res);
-  } catch (error) {
-    console.error("Error fetching chapeter:", error);
-    res.status(500).send("Server error");
-  }
-});
-
 app.get(prefix + "/doc", async (req, res) => {
   try {
     const files = await googleDrive("TEKSTAI");
@@ -171,6 +116,61 @@ app.get(prefix + "/doc/*", async (req, res) => {
     res.json(returning);
   } catch (error) {
     res.status(500).send("Server error" + error);
+  }
+});
+
+app.get(prefix + "/knygos", async (req, res) => {
+  try {
+    res.json(await getBooksList());
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/:knyga", async (req, res) => {
+  try {
+    const bookName = req.params.knyga;
+    const knygos = await getBooksList();
+
+    if (bookName === knygos[0]) {
+      res.json(await getBookChapterList(bookName));
+    } else if (bookName === knygos[1]) {
+      res.json(await getBookChapterList(bookName));
+    } else {
+      console.error("Error fetching book:", bookName);
+      res.status(404).send("No book of that name found");
+    }
+  } catch (error) {
+    console.error("Error fetching book:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
+  try {
+    const chapeter = req.params.chapeter;
+    const range = req.headers.range;
+
+    let id = await findIdByName(chapeter);
+
+    if (id == null) {
+      console.error("Error fetching chapeter:", req.params.chapeter);
+      return res.status(404).send("No chapeter of that name found");
+    }
+
+    const stream = await streamFile(id);
+
+    const stream_content_type = stream.headers["content-type"];
+    const stream_content_length = stream.headers["content-length"];
+
+    res.setHeader("Content-Type", stream_content_type);
+    res.setHeader("Content-Length", stream_content_length);
+    res.setHeader("Accept-Ranges", "bytes");
+
+    stream.data.pipe(res);
+  } catch (error) {
+    console.error("Error fetching chapeter:", error);
+    res.status(500).send("Server error");
   }
 });
 
