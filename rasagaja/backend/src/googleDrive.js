@@ -21,7 +21,8 @@ if (!TOKEN_PATH || !CREDENTIALS_PATH) {
   throw new Error("Missing env var TOKEN_PATH");
 }
 
-let folderMap = listDirAndDirId();
+let folderMap = null;
+let initPromise = null;
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -76,6 +77,18 @@ async function authorize() {
     await saveCredentials(client);
   }
   return client;
+}
+
+async function init() {
+  if (folderMap) return folderMap;
+  if (initPromise) return initPromise;
+
+  initPromise = (async () => {
+    folderMap = await listDirAndDirId();
+    return folderMap;
+  })();
+
+  return initPromise;
 }
 
 async function googleDrive(folderKey) {
@@ -259,6 +272,7 @@ async function findIdByName(name) {
 }
 
 module.exports = {
+  init,
   findIdByName,
   getBooksList,
   getBookChapterList,

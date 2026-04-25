@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+  init,
   findIdByName,
   getBooksList,
   getBookChapterList,
@@ -13,12 +14,50 @@ const { getDocText, handelingDocument } = require("./src/mammoth.js");
 const app = express();
 const prefix = "/backend";
 
+let apiReady = false;
+let initError = null;
+
+async function initIndex() {
+  try {
+    await init();
+    apiReady = true;
+  } catch (err) {
+    initError = err;
+    console.error("Google Drive init failed:", err);
+  }
+}
+
+function rejectIfStarting(req, res, next) {
+  if (apiReady) return next();
+
+  if (initError) {
+    return res.status(500).json({
+      status: "error",
+      message: "API failed to start",
+    });
+  }
+
+  return res.status(503).json({
+    status: "starting",
+    message: "API is starting, try again soon",
+  });
+}
+
 app.get(prefix + "/", async (req, res) => {
+  if (!apiReady) {
+    return res.status(503).json({
+      status: "starting",
+      message: "API is starting",
+    });
+  }
+
   res.send(
     "Hello. I see you've stumbled into my back end - that's okay. You can always go back unless you want to look for some data in here, which is possible. You probably won't find anything very interesting... unless you like audiobooks, in which case, sure.",
   );
   console.info("init get:", req.ip);
 });
+
+app.use(prefix, rejectIfStarting);
 
 app.get(prefix + "/knygos", async (req, res) => {
   try {
@@ -135,4 +174,4 @@ app.get(prefix + "/doc/*", async (req, res) => {
   }
 });
 
-module.exports = { app };
+module.exports = { app, initIndex };
