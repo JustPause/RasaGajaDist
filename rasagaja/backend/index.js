@@ -9,7 +9,7 @@ const {
   googleDrive,
 } = require("./src/googleDrive");
 
-const { getDocText, handelingDocument } = require("./src/mammoth.js");
+const { handelingDocument } = require("./src/mammoth.js");
 
 const app = express();
 const prefix = "/backend";
@@ -123,7 +123,7 @@ app.get(prefix + "/knygos", async (req, res) => {
   try {
     res.json(await getBooksList());
   } catch (error) {
-    res.status(500).send("Server error");
+    res.status(500).send("Server error " + error);
   }
 });
 
@@ -149,7 +149,7 @@ app.get(prefix + "/:knyga", async (req, res) => {
 app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
   try {
     const chapeter = req.params.chapeter;
-    const range = req.headers.range;
+    // const range = req.headers.range;
 
     let id = await findIdByName(chapeter);
 

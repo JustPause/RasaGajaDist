@@ -21,26 +21,40 @@ async function getDocText(docFilesId) {
 }
 
 async function handelingDocument(files) {
-  const docFiles = files.filter((file) => {
+  const docxFiles = files.filter((file) => {
     const name = file.name.toLowerCase();
     return name.endsWith(".docx");
   });
 
-  if (docFiles.length === 0) {
+  const docFiles = files.filter((file) => {
+    const name = file.name.toLowerCase();
+    return name.endsWith(".doc");
+  });
+  console.log(docFiles);
+
+  if (docxFiles.length === 0 && docFiles.length !== 0) {
+    return [
+      404,
+      "Administratorius žino apie bėdą, pabandykite kitą dokumentą.",
+    ];
+  }
+
+  if (docxFiles.length === 0) {
     return [];
   }
 
-  const text = await getDocText(docFiles[0].id);
+  const text = await getDocText(docxFiles[0].id);
 
   const lines = text;
 
   if (lines.length < 2) {
-    return res
-      .status(404)
-      .send("Docx does not contain enough text (missing title/body)");
+    return [
+      404,
+      "DOCX faile nėra pakankamai teksto (trūksta pavadinimo arba pagrindinio teksto).",
+    ];
   }
 
-  return [lines[0], (body = lines.slice(1).map((line) => line.trim()))];
+  return [lines[0], lines.slice(1).map((line) => line.trim())];
 }
 
 module.exports = { getDocText, handelingDocument };

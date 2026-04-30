@@ -1,7 +1,6 @@
 const os = require("os");
 // const fs = require("node:fs").promises;
 const fs = require("fs").promises;
-const path = require("path");
 const process = require("process");
 
 process.env.NODE_EXTRA_CA_CERTS = "/var/home/rasagaja/backend/cacert.crt";
@@ -34,7 +33,7 @@ async function loadSavedCredentialsIfExist() {
     const content = await fs.readFile(TOKEN_PATH);
     const credentials = JSON.parse(content);
     return google.auth.fromJSON(credentials);
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -165,27 +164,27 @@ function reformatingFromDicsinayName(Data) {
   return Data;
 }
 
-async function listFiles(folderKey) {
-  const files = await googleDrive(folderKey);
+// async function listFiles(folderKey) {
+//   const files = await googleDrive(folderKey);
 
-  if (files.length === 0) {
-    console.error("No files found.");
-    return;
-  }
+//   if (files.length === 0) {
+//     console.error("No files found.");
+//     return;
+//   }
 
-  return files;
-}
+//   return files;
+// }
 
-async function listFilesId(id) {
-  const files = await googleDrive(id);
+// async function listFilesId(id) {
+//   const files = await googleDrive(id);
 
-  if (files.length === 0) {
-    console.error("No files found.");
-    return;
-  }
+//   if (files.length === 0) {
+//     console.error("No files found.");
+//     return;
+//   }
 
-  return files;
-}
+//   return files;
+// }
 
 async function accessDrive() {
   return google.drive({ version: "v3", auth: await authorize() });
