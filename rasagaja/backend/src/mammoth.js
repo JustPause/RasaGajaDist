@@ -30,16 +30,27 @@ async function handelingDocument(files) {
     const name = file.name.toLowerCase();
     return name.endsWith(".doc");
   });
-  console.log(docFiles);
+
+  const imgFiles = files.filter((file) => {
+    const name = file.name.toLowerCase();
+    return name.endsWith(".jpg") | name.endsWith(".png");
+  });
 
   if (docxFiles.length === 0 && docFiles.length !== 0) {
     return [
       404,
-      "Administratorius žino apie bėdą, pabandykite kitą dokumentą.",
+      "Administratorius žino apie bėdą, pabandykite kitą dokumentą. (doc)",
+    ];
+  }
+  if (docxFiles.length === 0 && imgFiles.length !== 0) {
+    return [
+      404,
+      "Administratorius žino apie bėdą, pabandykite kitą dokumentą. (jpg/png)",
     ];
   }
 
   if (docxFiles.length === 0) {
+    // console.debug("No directory");
     return [];
   }
 
@@ -53,7 +64,7 @@ async function handelingDocument(files) {
       "DOCX faile nėra pakankamai teksto (trūksta pavadinimo arba pagrindinio teksto).",
     ];
   }
-
+  // console.debug("lines.length directory");
   return [lines[0], lines.slice(1).map((line) => line.trim())];
 }
 

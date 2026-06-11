@@ -190,13 +190,14 @@ async function accessDrive() {
   return google.drive({ version: "v3", auth: await authorize() });
 }
 
-async function streamFile(fileId) {
+async function streamFile(fileId, options = {}) {
   const drive = await accessDrive();
+  const requestOptions = {
+    responseType: "stream",
+    ...options,
+  };
 
-  const res = await drive.files.get(
-    { fileId, alt: "media" },
-    { responseType: "stream" },
-  );
+  const res = drive.files.get({ fileId, alt: "media" }, requestOptions);
 
   return res;
 }

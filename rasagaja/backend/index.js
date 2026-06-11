@@ -92,7 +92,6 @@ app.get(prefix + "/doc/*", async (req, res) => {
     if (files === undefined) {
       return res.status(404).send("No document buy that name");
     }
-
     const document = await handelingDocument(files);
 
     if (document.length !== 0) {
@@ -104,18 +103,34 @@ app.get(prefix + "/doc/*", async (req, res) => {
 
     for (let i = 0; i < files.length; i++) {
       const name = files[i].name;
-      const match = name.match(/^\d+/);
 
-      if (!match) continue;
+      const match = name.match(/^(\d+)(?:\s*m\s*\.?)?[\s.]+(.*)/i);
+      console.log(match);
 
-      const index = Number(match[0]) - 1;
-      const cleanName = name.replace(/^\d+\.\s*/, "");
-      returning[index] = cleanName;
+      if (match) {
+        const num = parseInt(match[1], 10);
+        const remainingName = match[2].trim();
+
+        if (num >= 1000) {
+          returning.push(name);
+        } else {
+          const index = num - 1;
+          if (index >= 0) {
+            returning[index] = remainingName;
+          } else {
+            returning.push(name);
+          }
+        }
+      } else {
+        returning.push(name);
+      }
     }
+
+    returning = returning.filter(() => true);
 
     res.json(returning);
   } catch (error) {
-    res.status(500).send("Server error" + error);
+    res.status(500).send("Server error. " + error);
   }
 });
 
@@ -149,7 +164,7 @@ app.get(prefix + "/:knyga", async (req, res) => {
 app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
   try {
     const chapeter = req.params.chapeter;
-    // const range = req.headers.range;
+    const range = req.headers.range;
 
     let id = await findIdByName(chapeter);
 
@@ -158,16 +173,38 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
       return res.status(404).send("No chapeter of that name found");
     }
 
-    const stream = await streamFile(id);
+    const options = {};
+    if (range) {
+      options.headers = { Range: range };
+    }
 
-    const stream_content_type = stream.headers["content-type"];
-    const stream_content_length = stream.headers["content-length"];
+    const stream = await streamFile(id, options);
+
+    const headers = stream.headers;
+
+    const stream_content_type = headers.get("content-type");
+    const stream_content_length = headers.get("content-length");
+    const stream_content_range = headers.get("content-range");
 
     res.setHeader("Content-Type", stream_content_type);
-    res.setHeader("Content-Length", stream_content_length);
     res.setHeader("Accept-Ranges", "bytes");
 
+    if (range && stream_content_range) {
+      res.status(206);
+      res.setHeader("Content-Range", stream_content_range);
+      res.setHeader("Content-Length", stream_content_length);
+    } else {
+      res.status(200);
+      res.setHeader("Content-Length", stream_content_length);
+    }
+
     stream.data.pipe(res);
+
+    req.on("close", () => {
+      if (stream.data && typeof stream.data.destroy === "function") {
+        stream.data.destroy();
+      }
+    });
   } catch (error) {
     console.error("Error fetching chapeter:", error);
     res.status(500).send("Server error");
