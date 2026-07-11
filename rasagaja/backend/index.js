@@ -78,7 +78,7 @@ app.get(prefix + "/doc", async (req, res) => {
 
     res.json(returning);
   } catch (error) {
-    res.status(500).send("Server error" + error);
+    res.status(500).send("Server error. " + error);
   }
 });
 
@@ -138,7 +138,7 @@ app.get(prefix + "/knygos", async (req, res) => {
   try {
     res.json(await getBooksList());
   } catch (error) {
-    res.status(500).send("Server error " + error);
+    res.status(500).send("Server error. " + error);
   }
 });
 
@@ -157,7 +157,7 @@ app.get(prefix + "/:knyga", async (req, res) => {
     }
   } catch (error) {
     console.error("Error fetching book:", error);
-    res.status(500).send("Server error");
+    res.status(500).send("Error fetching book. " + error);
   }
 });
 
@@ -182,9 +182,21 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
 
     const headers = stream.headers;
 
-    const stream_content_type = headers.get("content-type");
-    const stream_content_length = headers.get("content-length");
-    const stream_content_range = headers.get("content-range");
+    let stream_content_type, stream_content_length, stream_content_range;
+
+    if (typeof headers.get === "function") {
+      stream_content_type = headers.get("content-type");
+      stream_content_length = headers.get("content-length");
+      stream_content_range = headers.get("content-range");
+    } else {
+      stream_content_type = headers["content-type"];
+      stream_content_length = headers["content-length"];
+      stream_content_range = headers["content-range"];
+    }
+
+    if (!stream_content_type) {
+      return res.status(500).send("Missing content-type header");
+    }
 
     res.setHeader("Content-Type", stream_content_type);
     res.setHeader("Accept-Ranges", "bytes");
@@ -207,7 +219,7 @@ app.get(prefix + "/:knyga/:chapeter", async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching chapeter:", error);
-    res.status(500).send("Server error");
+    res.status(500).send("Error fetching chapeter. " + error);
   }
 });
 
