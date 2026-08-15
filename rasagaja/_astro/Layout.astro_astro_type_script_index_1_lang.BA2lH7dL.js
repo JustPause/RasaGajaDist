@@ -1,0 +1,1 @@
+import{t as e}from"./Hellper.G_raSX-v.js";await fetch(`${e}/backend/`,{mode:`no-cors`});
