@@ -1,0 +1,1 @@
+var e=`http://rasagaja.lt`;export{e as t};

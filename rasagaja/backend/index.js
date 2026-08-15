@@ -9,7 +9,7 @@ const {
   googleDrive,
 } = require("./src/googleDrive");
 
-const { handelingDocument } = require("./src/mammoth.js");
+// const { handelingDocument } = require("./src/mammoth.js");
 
 const app = express();
 const prefix = "/backend";
@@ -82,57 +82,57 @@ app.get(prefix + "/doc", async (req, res) => {
   }
 });
 
-app.get(prefix + "/doc/*", async (req, res) => {
-  try {
-    const path = String(req.params[0]);
-    const folderNames = path.split("/");
-    const documenString = folderNames[folderNames.length - 1];
-    const files = await googleDrive(documenString);
+// app.get(prefix + "/doc/*", async (req, res) => {
+//   try {
+//     const path = String(req.params[0]);
+//     const folderNames = path.split("/");
+//     const documenString = folderNames[folderNames.length - 1];
+//     const files = await googleDrive(documenString);
 
-    if (files === undefined) {
-      return res.status(404).send("No document buy that name");
-    }
-    const document = await handelingDocument(files);
+//     if (files === undefined) {
+//       return res.status(404).send("No document buy that name");
+//     }
+//     const document = await handelingDocument(files);
 
-    if (document.length !== 0) {
-      res.json({ Title: document[0], body: document[1] });
-      return;
-    }
+//     if (document.length !== 0) {
+//       res.json({ Title: document[0], body: document[1] });
+//       return;
+//     }
 
-    let returning = [];
+//     let returning = [];
 
-    for (let i = 0; i < files.length; i++) {
-      const name = files[i].name;
+//     for (let i = 0; i < files.length; i++) {
+//       const name = files[i].name;
 
-      const match = name.match(/^(\d+)(?:\s*m\s*\.?)?[\s.]+(.*)/i);
-      console.log(match);
+//       const match = name.match(/^(\d+)(?:\s*m\s*\.?)?[\s.]+(.*)/i);
+//       console.log(match);
 
-      if (match) {
-        const num = parseInt(match[1], 10);
-        const remainingName = match[2].trim();
+//       if (match) {
+//         const num = parseInt(match[1], 10);
+//         const remainingName = match[2].trim();
 
-        if (num >= 1000) {
-          returning.push(name);
-        } else {
-          const index = num - 1;
-          if (index >= 0) {
-            returning[index] = remainingName;
-          } else {
-            returning.push(name);
-          }
-        }
-      } else {
-        returning.push(name);
-      }
-    }
+//         if (num >= 1000) {
+//           returning.push(name);
+//         } else {
+//           const index = num - 1;
+//           if (index >= 0) {
+//             returning[index] = remainingName;
+//           } else {
+//             returning.push(name);
+//           }
+//         }
+//       } else {
+//         returning.push(name);
+//       }
+//     }
 
-    returning = returning.filter(() => true);
+//     returning = returning.filter(() => true);
 
-    res.json(returning);
-  } catch (error) {
-    res.status(500).send("Server error. " + error);
-  }
-});
+//     res.json(returning);
+//   } catch (error) {
+//     res.status(500).send("Server error. " + error);
+//   }
+// });
 
 app.get(prefix + "/knygos", async (req, res) => {
   try {

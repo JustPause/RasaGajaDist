@@ -1,0 +1,29 @@
+<!DOCTYPE html><!-- <Layout title={title}>
+  <div class="IndexPageOutsideListing">
+    <div class="IndexPageInsideListing flex-col">
+      {
+        directory ? (
+          <div class="*:bg-dark-primary-darker flex w-full flex-col gap-4 *:rounded-xl *:p-2 *:uppercase sm:max-w-306">
+            {straipsnis.map((vienaEilute: string) => {
+              const eilute = vienaEilute
+                .toLowerCase()
+                .replaceAll(" ", "-")
+                .replaceAll(".", "_");
+              return (
+                <a href={`${Astro.url.pathname}/${eilute}`}>
+                  {vienaEilute}
+                </a>
+              );
+            })}
+          </div>
+        ) : (
+        <p class="tekstai-title">{title}</p>
+
+        <div class="tekstai-body">
+          {body.map((sentence: string) => <p>{sentence}</p>)}
+        </div>
+        )
+      }
+    </div>
+  </div>
+</Layout>  -->
