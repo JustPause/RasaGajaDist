@@ -60,6 +60,7 @@ const domainName = "http://rasagaja.lt";
                   }
                 }, 2000);
               } else if (response.status === 200) {
+                console.log(response.body);
                 console.log("Server already active!");
               }
             } catch (error) {
