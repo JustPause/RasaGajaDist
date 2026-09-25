@@ -39,15 +39,20 @@ const domainName = "http://rasagaja.lt";
           document.addEventListener("astro:page-load", initSelectionAudioFile);
 
           async function startServerMonitoring() {
-            statusCheckInterval = window.setInterval(async () => {
-              const response = await fetch(`${domainName}/backend/`);
-              console.log(response.ok);
-              if (response.ok) {
-                isServerActive = true;
-                location.reload();
-                clearInterval(statusCheckInterval);
-              }
-            }, 2000);
+            const response = await fetch(`${domainName}/backend/`);
+            console.log(response.ok);
+
+            if (!response.ok) {
+              statusCheckInterval = window.setInterval(async () => {
+                const response = await fetch(`${domainName}/backend/`);
+
+                if (response.ok) {
+                  isServerActive = true;
+                  location.reload();
+                  clearInterval(statusCheckInterval);
+                }
+              }, 2000);
+            }
           }
           startServerMonitoring();
         })();</script></div></div></div></div><footer class="bg-dark-primary relative bottom-0 mt-16 flex h-16 w-full items-center justify-center"><p class="text-[min(4vw,1rem)]">RasaGaja © 2026</p></footer></body><script type="module">document.addEventListener(`astro:page-load`,()=>{if(CSS.supports(`animation-timeline: scroll()`)==0){let e=document.querySelectorAll(`#parallax > *`);function t(){let t=window.scrollY,n=document.body.scrollHeight-window.innerHeight,r=0,i=-.49;document.body.clientWidth<640&&(r=.2,i=-.2);let a=t/n,o=r+(i-r)*a;e.forEach(e=>{e.style.transform=`translateY(${o*100}%)`})}window.addEventListener(`scroll`,t),t()}});var e=document.querySelectorAll(`#parallax > *`);function t(){let t=window.scrollY,n=document.body.scrollHeight-window.innerHeight,r=0,i=-.49;document.body.clientWidth<640&&(r=.2,i=-.2);let a=t/n,o=r+(i-r)*a;e.forEach(e=>{e.style.transform=`translateY(${o*100}%)`})}window.addEventListener(`scroll`,t);</script><script type="module" src="/_astro/Layout.astro_astro_type_script_index_1_lang.BA2lH7dL.js"></script></html>
