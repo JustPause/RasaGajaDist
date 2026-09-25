@@ -18,13 +18,16 @@ const prefix = "/backend";
 let apiReady = false;
 let initError = null;
 
-app.use(cors());
-// app.use(
-//   cors({
-//     origin: "https://rasagaja.lt",
-//     credentials: true,
-//   }),
-// );
+app.use(
+  cors({
+    origin: [
+      "https://rasagaja.lt",
+      "http://localhost:3000",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  }),
+);
 
 async function initIndex() {
   try {
