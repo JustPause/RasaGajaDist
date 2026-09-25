@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const {
   init,
@@ -16,6 +17,13 @@ const prefix = "/backend";
 
 let apiReady = false;
 let initError = null;
+
+app.use(
+  cors({
+    origin: "https://rasagaja.lt",
+    credentials: true,
+  }),
+);
 
 async function initIndex() {
   try {
